@@ -1,9 +1,7 @@
 ID;Titulo;Autor;Disponible
-1;"Heraldos Negros";"Cesar Vallejo";NO
+1;"Heraldos ";"Cesar Vallejo";NO
 2;"Tradiciones peruanas";"Ricardo Palma";NO
-3;"A";"B";SI
 4;"Hamlet";"Shaskpare";NO
-5;"Ciudad de los perros";"v llosa";SI
 6;"Lazaro";"Ciro Alegria";NO
-7;"";"";SI
-8;"ABC";"CDE";SI
+12;"lazaro";"lazaro";SI
+14;"DEF";"GHI";SI
