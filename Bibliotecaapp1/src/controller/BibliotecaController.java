@@ -84,5 +84,10 @@ public class BibliotecaController {
         libroDAO.actualizarLibro(libro);
     }
     
+    public String login(String usuario, String password) {
+        dao.UsuarioDAO dao = new dao.UsuarioDAO();
+        return dao.validar(usuario, password);
+    }
+    
     
 }

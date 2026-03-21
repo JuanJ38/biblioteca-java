@@ -9,8 +9,10 @@ import model.Libro;
 public class MainFrame extends JFrame {
 
     private BibliotecaController controller = new BibliotecaController();
+    private String rol;
 
-    public MainFrame() {
+    public MainFrame(String rol) {
+    	this.rol = rol;
         setTitle("Sistema de Biblioteca");
         setSize(400, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,5 +92,8 @@ public class MainFrame extends JFrame {
 
             JOptionPane.showMessageDialog(null, "Excel generado correctamente");
         });
+        
+        
     }
+    
 }

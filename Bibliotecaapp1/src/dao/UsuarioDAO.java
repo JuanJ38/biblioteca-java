@@ -48,4 +48,17 @@ public class UsuarioDAO {
 
         return lista;
     }
+    
+    public String validar(String usuario, String password) {
+
+        if (usuario.equals("admin") && password.equals("1234")) {
+            return "ADMIN";
+        }
+
+        if (usuario.equals("user") && password.equals("1234")) {
+            return "USER";
+        }
+
+        return null;
+    }
 }
