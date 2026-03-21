@@ -36,6 +36,12 @@ public class MainFrame extends JFrame {
         JButton btnVerUsuario = new JButton("Ver Usuario");
         btnVerUsuario.setBounds(100, 150, 200, 30);
         panel.add(btnVerUsuario);
+        if (rol.equals("USER")) {
+        	if (rol.equals("USER")) {
+        	    btnVerUsuario.setVisible(false);
+        	    
+        	}
+        }
         
     // Boton para agregar Usuario   
         JButton btnAgregarUsuario = new JButton("Agregar Usuario");
