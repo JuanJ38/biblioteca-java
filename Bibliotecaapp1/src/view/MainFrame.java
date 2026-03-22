@@ -5,7 +5,7 @@ import controller.BibliotecaController;
 import util.ExportarExcel;
 import java.util.ArrayList;
 import model.Libro;
-import java.awt.GridLayout;
+import java.awt.Dimension;
 public class MainFrame extends JFrame {
 
     private BibliotecaController controller = new BibliotecaController();
@@ -20,42 +20,59 @@ public class MainFrame extends JFrame {
 
         // Panel
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 1, 10, 10)); 
-
-        // Botón agregar libro
+        //ordena los botones
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        
+     // BOTONES
         JButton btnAgregarLibro = new JButton("Agregar Libro");
-       // btnAgregarLibro.setBounds(100, 50, 200, 30);
+        JButton btnVerLibros = new JButton("Ver Libros");
+        JButton btnVerUsuario = new JButton("Ver Usuario");
+        JButton btnAgregarUsuario = new JButton("Agregar Usuario");
+        JButton btnPrestar = new JButton("Prestar Libro");
+        JButton btnSalir = new JButton("Salir");
+        JButton btnExcel = new JButton("Exportar Libros a Excel");
+
+        // 🔧 TAMAÑOS PERSONALIZADOS
+        btnAgregarLibro.setMaximumSize(new Dimension(280, 50));
+        btnVerLibros.setMaximumSize(new Dimension(260, 45));
+        btnVerUsuario.setMaximumSize(new Dimension(260, 45));
+        btnAgregarUsuario.setMaximumSize(new Dimension(260, 45));
+        btnPrestar.setMaximumSize(new Dimension(240, 40));
+        btnSalir.setMaximumSize(new Dimension(200, 35));
+        btnExcel.setMaximumSize(new Dimension(300, 45));
+
+        // 🔧 CENTRAR BOTONES HORIZONTAL
+        JButton[] botones = {
+            btnAgregarLibro, btnVerLibros, btnVerUsuario,
+            btnAgregarUsuario, btnPrestar, btnSalir, btnExcel
+        };
+
+        for (JButton b : botones) {
+            b.setAlignmentX(JButton.CENTER_ALIGNMENT);
+        }
+
+        // 📌 AGREGAR ESPACIO  VETICAL Y BOTONES (CON ROLES)
+        panel.add(Box.createVerticalStrut(20));
         panel.add(btnAgregarLibro);
 
-        // Botón ver libros
-        JButton btnVerLibros = new JButton("Ver Libros");
-        //btnVerLibros.setBounds(100, 100, 200, 30);
+        panel.add(Box.createVerticalStrut(15));
         panel.add(btnVerLibros);
-        
-     // Botón ver Usuario
-        JButton btnVerUsuario = new JButton("Ver Usuario");
-        //btnVerUsuario.setBounds(100, 150, 200, 30);
+
         if (!rol.equals("USER")) {
+            panel.add(Box.createVerticalStrut(15));
             panel.add(btnVerUsuario);
+
+            panel.add(Box.createVerticalStrut(15));
+            panel.add(btnAgregarUsuario);
         }
-        
-    // Boton para agregar Usuario   
-        JButton btnAgregarUsuario = new JButton("Agregar Usuario");
-        //btnAgregarUsuario.setBounds(100, 200, 200, 30);
-        panel.add(btnAgregarUsuario);
-        
-    //Boton para prestar     
-        JButton btnPrestar = new JButton("Prestar Libro");
-        //btnPrestar.setBounds(100, 250, 200, 30);
+
+        panel.add(Box.createVerticalStrut(15));
         panel.add(btnPrestar);
-        
-    // Boton salir
-        JButton btnSalir = new JButton("Salir");
-        //btnSalir.setBounds(100, 300, 200, 30);
+
+        panel.add(Box.createVerticalStrut(15));
         panel.add(btnSalir);
-        
-        JButton btnExcel = new JButton("Exportar Libros a Excel");
-        //btnExcel.setBounds(100, 350, 200, 30);
+
+        panel.add(Box.createVerticalStrut(15));
         panel.add(btnExcel);
         
         
