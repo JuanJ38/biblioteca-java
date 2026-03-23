@@ -2,55 +2,93 @@ package view;
 
 import javax.swing.*;
 import controller.BibliotecaController;
+import model.Libro;
+import model.Usuario;
+import java.awt.*;
 
-public class PrestamoForm extends JFrame {
+public class PrestamoForm extends JPanel {
 
-    private BibliotecaController controller;
+    private BibliotecaController controller; // 🔹 controlador para acceder a lógica
 
     public PrestamoForm(BibliotecaController controller) {
         this.controller = controller;
 
-        setTitle("Prestar Libro");
-        setSize(300, 200);
-        setLocationRelativeTo(null);
+        setLayout(null); // 🔹 usamos posiciones manuales
 
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-
-        JLabel lblLibro = new JLabel("ID Libro:");
+        // =========================
+        // 🔹 LABEL LIBRO
+        // =========================
+        JLabel lblLibro = new JLabel("Libro:");
         lblLibro.setBounds(20, 20, 80, 25);
-        panel.add(lblLibro);
+        add(lblLibro);
 
-        JTextField txtLibro = new JTextField();
-        txtLibro.setBounds(100, 20, 150, 25);
-        panel.add(txtLibro);
+        // =========================
+        // 🔹 LABEL USUARIO
+        // =========================
+        JLabel lblUsuario = new JLabel("Usuario:");
+        lblUsuario.setBounds(20, 60, 80, 25);
+        add(lblUsuario);
 
-        JLabel lblUsuario = new JLabel("ID Usuario:");
-        lblUsuario.setBounds(20, 60, 100, 25);
-        panel.add(lblUsuario);
+        // =========================
+        // 🔹 COMBO LIBROS
+        // =========================
+        JComboBox<Libro> comboLibros = new JComboBox<>();
+        comboLibros.setBounds(100, 20, 180, 25);
+        add(comboLibros);
 
-        JTextField txtUsuario = new JTextField();
-        txtUsuario.setBounds(100, 60, 150, 25);
-        panel.add(txtUsuario);
+        // =========================
+        // 🔹 COMBO USUARIOS
+        // =========================
+        JComboBox<Usuario> comboUsuarios = new JComboBox<>();
+        comboUsuarios.setBounds(100, 60, 180, 25);
+        add(comboUsuarios);
 
+        // =========================
+        // 🔥 CARGAR LIBROS DESDE BD
+        // =========================
+        for (Libro l : controller.obtenerLibros()) {
+            comboLibros.addItem(l); // 🔹 se agrega cada libro al combo
+        }
+
+        // =========================
+        // 🔥 CARGAR USUARIOS DESDE BD
+        // =========================
+        for (Usuario u : controller.obtenerUsuarios()) {
+            comboUsuarios.addItem(u); // 🔹 se agrega cada usuario al combo
+        }
+
+        // =========================
+        // 🔹 BOTÓN PRESTAR
+        // =========================
         JButton btnPrestar = new JButton("Prestar");
         btnPrestar.setBounds(100, 100, 100, 30);
-        panel.add(btnPrestar);
+        add(btnPrestar);
 
-        add(panel);
-
-        // EVENTO 🔥
+        // =========================
+        // 🔥 EVENTO DEL BOTÓN
+        // =========================
         btnPrestar.addActionListener(e -> {
-            int idLibro = Integer.parseInt(txtLibro.getText());
-            int idUsuario = Integer.parseInt(txtUsuario.getText());
 
-            boolean exito = controller.prestarLibro(idLibro, idUsuario);
+            // 🔹 Obtener libro seleccionado
+            Libro libro = (Libro) comboLibros.getSelectedItem();
 
+            // 🔹 Obtener usuario seleccionado
+            Usuario usuario = (Usuario) comboUsuarios.getSelectedItem();
+
+            // 🔹 Validación
+            if (libro == null || usuario == null) {
+                JOptionPane.showMessageDialog(null, "Seleccione datos");
+                return;
+            }
+
+            // 🔹 Ejecutar préstamo (usa IDs)
+            boolean exito = controller.prestarLibro(libro.getId(), usuario.getId());
+
+            // 🔹 Resultado
             if (exito) {
-                JOptionPane.showMessageDialog(this, "Préstamo realizado");
-                dispose();
+                JOptionPane.showMessageDialog(null, "Préstamo realizado");
             } else {
-                JOptionPane.showMessageDialog(this, "Libro no disponible");
+                JOptionPane.showMessageDialog(null, "Libro no disponible");
             }
         });
     }

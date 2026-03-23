@@ -5,17 +5,16 @@ import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import model.Usuario;
 import controller.BibliotecaController;
+import java.awt.*;
 
-public class ListaUsuariosFrame extends JFrame {
+public class ListaUsuariosFrame extends JPanel { // 🔥 CAMBIO
 
     private BibliotecaController controller;
 
     public ListaUsuariosFrame(BibliotecaController controller) {
         this.controller = controller;
 
-        setTitle("Lista de Usuarios");
-        setSize(500, 300);
-        setLocationRelativeTo(null);
+        setLayout(new BorderLayout()); // 🔥 IMPORTANTE
 
         String[] columnas = {"ID", "Nombre", "Correo"};
         DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
@@ -23,7 +22,7 @@ public class ListaUsuariosFrame extends JFrame {
         JTable tabla = new JTable(modelo);
         JScrollPane scroll = new JScrollPane(tabla);
 
-        add(scroll);
+        add(scroll, BorderLayout.CENTER);
 
         cargarUsuarios(modelo);
     }

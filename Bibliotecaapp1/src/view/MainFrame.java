@@ -89,7 +89,11 @@ public class MainFrame extends JFrame {
         panelContenedor.add(panelInicio, "INICIO");
         
         panelContenedor.add(new LibroForm(controller), "LIBRO");
-
+        panelContenedor.add(new ListaLibrosFrame(controller), "LISTA_LIBROS");
+        panelContenedor.add(new ListaUsuariosFrame(controller), "LISTA_USUARIOS");
+        panelContenedor.add(new UsuarioForm(controller), "USUARIOS");
+        panelContenedor.add(new PrestamoForm(controller), "PRESTAMOS");
+        
         add(panelContenedor, BorderLayout.CENTER);
 
         // =========================
@@ -100,19 +104,19 @@ public class MainFrame extends JFrame {
         });
 
         btnVerLibros.addActionListener(e -> {
-            cardLayout.show(panelContenedor, "INICIO");
+            cardLayout.show(panelContenedor, "LISTA_LIBROS");
         });
 
         btnVerUsuario.addActionListener(e -> {
-            cardLayout.show(panelContenedor, "INICIO");
+            cardLayout.show(panelContenedor, "LISTA_USUARIOS");
         });
 
         btnAgregarUsuario.addActionListener(e -> {
-            cardLayout.show(panelContenedor, "INICIO");
+            cardLayout.show(panelContenedor, "USUARIOS");
         });
 
         btnPrestar.addActionListener(e -> {
-            cardLayout.show(panelContenedor, "INICIO");
+            cardLayout.show(panelContenedor, "PRESTAMOS");
         });
 
         btnSalir.addActionListener(e -> {
