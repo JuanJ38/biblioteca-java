@@ -7,21 +7,26 @@ import model.Libro;
 import controller.BibliotecaController;
 import java.awt.*;
 
-public class ListaLibrosFrame extends JPanel { // 🔥 CAMBIO CLAVE
+public class ListaLibrosFrame extends JPanel {
 
     private BibliotecaController controller;
+
+    // 🔥 AHORA SON ATRIBUTOS (CLAVE)
+    private DefaultTableModel modelo;
+    private JTable tabla;
 
     public ListaLibrosFrame(BibliotecaController controller) {
         this.controller = controller;
 
-        setLayout(new BorderLayout()); // 🔥 importante
+        setLayout(new BorderLayout());
 
         String[] columnas = {"ID", "Título", "Autor", "Disponible"};
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-        JTable tabla = new JTable(modelo);
+        // 🔥 Inicializar como atributo
+        modelo = new DefaultTableModel(columnas, 0);
+        tabla = new JTable(modelo);
+
         JScrollPane scroll = new JScrollPane(tabla);
-
         add(scroll, BorderLayout.CENTER);
 
         JButton btnEliminar = new JButton("Eliminar Libro");
@@ -30,7 +35,8 @@ public class ListaLibrosFrame extends JPanel { // 🔥 CAMBIO CLAVE
         JButton btnEditar = new JButton("Editar Libro");
         add(btnEditar, BorderLayout.NORTH);
 
-        cargarLibros(modelo);
+        // 🔥 Cargar datos iniciales
+        cargarLibros();
 
         // ======================
         // 🔥 EVENTO EDITAR
@@ -63,8 +69,7 @@ public class ListaLibrosFrame extends JPanel { // 🔥 CAMBIO CLAVE
 
             JOptionPane.showMessageDialog(null, "Libro actualizado");
 
-            modelo.setRowCount(0);
-            cargarLibros(modelo);
+            refrescar(); // 🔥 IMPORTANTE
         });
 
         // ======================
@@ -94,13 +99,19 @@ public class ListaLibrosFrame extends JPanel { // 🔥 CAMBIO CLAVE
 
             JOptionPane.showMessageDialog(null, "Libro eliminado");
 
-            modelo.setRowCount(0);
-            cargarLibros(modelo);
+            refrescar(); // 🔥 IMPORTANTE
         });
     }
 
-    private void cargarLibros(DefaultTableModel modelo) {
+    // 🔥 MÉTODO PARA RECARGAR LA TABLA
+    public void refrescar() {
+        cargarLibros();
+    }
+
+    private void cargarLibros() {
         ArrayList<Libro> libros = controller.obtenerLibros();
+
+        modelo.setRowCount(0); // limpiar
 
         for (Libro l : libros) {
             modelo.addRow(new Object[]{

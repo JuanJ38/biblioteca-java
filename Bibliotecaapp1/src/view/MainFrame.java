@@ -15,15 +15,18 @@ public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel panelContenedor;
 
+    // 🔥 REFERENCIA AL PANEL (IMPORTANTE)
+    private ListaLibrosFrame listaLibrosFrame;
+
     public MainFrame(String rol) {
         this.rol = rol;
 
         setTitle("Sistema de Biblioteca");
-        setSize(900, 500); // 🔥 más ancho ahora
+        setSize(900, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        setLayout(new BorderLayout()); // 🔥 IMPORTANTE
+        setLayout(new BorderLayout());
 
         // =========================
         // 🔵 PANEL IZQUIERDO (MENÚ)
@@ -31,9 +34,7 @@ public class MainFrame extends JFrame {
         JPanel panelMenu = new JPanel();
         panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
         panelMenu.setPreferredSize(new Dimension(200, 0));
-        
 
-        // BOTONES
         JButton btnAgregarLibro = new JButton("Agregar Libro");
         JButton btnVerLibros = new JButton("Ver Libros");
         JButton btnVerUsuario = new JButton("Ver Usuario");
@@ -88,23 +89,28 @@ public class MainFrame extends JFrame {
         panelInicio.add(new JLabel("BIENVENIDO AL SISTEMA"));
 
         panelContenedor.add(panelInicio, "INICIO");
-        
+
+        // 🔥 GUARDAMOS REFERENCIA
         panelContenedor.add(new LibroForm(controller), "LIBRO");
-        panelContenedor.add(new ListaLibrosFrame(controller), "LISTA_LIBROS");
+
+        listaLibrosFrame = new ListaLibrosFrame(controller);
+        panelContenedor.add(listaLibrosFrame, "LISTA_LIBROS");
+
         panelContenedor.add(new ListaUsuariosFrame(controller), "LISTA_USUARIOS");
         panelContenedor.add(new UsuarioForm(controller), "USUARIOS");
         panelContenedor.add(new PrestamoForm(controller), "PRESTAMOS");
-        
+
         add(panelContenedor, BorderLayout.CENTER);
 
         // =========================
-        // 🔥 EVENTOS (TEMPORALES)
+        // 🔥 EVENTOS
         // =========================
         btnAgregarLibro.addActionListener(e -> {
             cardLayout.show(panelContenedor, "LIBRO");
         });
 
         btnVerLibros.addActionListener(e -> {
+            listaLibrosFrame.refrescar(); // 🔥 ACTUALIZA LA TABLA
             cardLayout.show(panelContenedor, "LISTA_LIBROS");
         });
 
