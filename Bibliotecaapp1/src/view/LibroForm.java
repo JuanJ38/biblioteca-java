@@ -3,41 +3,34 @@ package view;
 import javax.swing.*;
 import controller.BibliotecaController;
 
-public class LibroForm extends JFrame {
+public class LibroForm extends JPanel { // 🔥 CAMBIO CLAVE
 
     private BibliotecaController controller;
 
     public LibroForm(BibliotecaController controller) {
         this.controller = controller;
 
-        setTitle("Agregar Libro");
-        setSize(300, 200);
-        setLocationRelativeTo(null);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
+        setLayout(null); // 🔥 ahora el layout va aquí (no en otro panel)
 
         JLabel lblTitulo = new JLabel("Título:");
         lblTitulo.setBounds(20, 20, 80, 25);
-        panel.add(lblTitulo);
+        add(lblTitulo);
 
         JTextField txtTitulo = new JTextField();
         txtTitulo.setBounds(100, 20, 150, 25);
-        panel.add(txtTitulo);
+        add(txtTitulo);
 
         JLabel lblAutor = new JLabel("Autor:");
         lblAutor.setBounds(20, 60, 80, 25);
-        panel.add(lblAutor);
+        add(lblAutor);
 
         JTextField txtAutor = new JTextField();
         txtAutor.setBounds(100, 60, 150, 25);
-        panel.add(txtAutor);
+        add(txtAutor);
 
         JButton btnGuardar = new JButton("Guardar");
         btnGuardar.setBounds(100, 100, 100, 30);
-        panel.add(btnGuardar);
-
-        add(panel);
+        add(btnGuardar);
 
         // EVENTO 🔥
         btnGuardar.addActionListener(e -> {
@@ -46,8 +39,7 @@ public class LibroForm extends JFrame {
 
             controller.agregarLibro(titulo, autor);
 
-            JOptionPane.showMessageDialog(this, "Libro agregado");
-            dispose(); // cerrar ventana
+            JOptionPane.showMessageDialog(null, "Libro agregado"); // 🔥 cambio aquí
         });
     }
 }
