@@ -30,7 +30,8 @@ public class MainFrame extends JFrame {
         // =========================
         JPanel panelMenu = new JPanel();
         panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
-        panelMenu.setPreferredSize(new Dimension(220, 0));
+        panelMenu.setPreferredSize(new Dimension(200, 0));
+        
 
         // BOTONES
         JButton btnAgregarLibro = new JButton("Agregar Libro");

@@ -46,6 +46,8 @@ public class PrestamoForm extends JPanel {
         // =========================
         // 🔥 CARGAR LIBROS DESDE BD
         // =========================
+        
+        comboLibros.addItem(new Libro(0, "-- Seleccione libro --", "", true)); // opción vacía
         for (Libro l : controller.obtenerLibros()) {
             comboLibros.addItem(l); // 🔹 se agrega cada libro al combo
         }
@@ -53,6 +55,8 @@ public class PrestamoForm extends JPanel {
         // =========================
         // 🔥 CARGAR USUARIOS DESDE BD
         // =========================
+        
+        comboUsuarios.addItem(new Usuario(0, "-- Seleccione Usuario --", "")); // opción vacía
         for (Usuario u : controller.obtenerUsuarios()) {
             comboUsuarios.addItem(u); // 🔹 se agrega cada usuario al combo
         }
