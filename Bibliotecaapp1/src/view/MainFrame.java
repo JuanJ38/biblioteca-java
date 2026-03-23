@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
 
     // 🔥 REFERENCIA AL PANEL (IMPORTANTE)
     private ListaLibrosFrame listaLibrosFrame;
+    private ListaUsuariosFrame listaUsuariosFrame;
 
     public MainFrame(String rol) {
         this.rol = rol;
@@ -96,7 +97,9 @@ public class MainFrame extends JFrame {
         listaLibrosFrame = new ListaLibrosFrame(controller);
         panelContenedor.add(listaLibrosFrame, "LISTA_LIBROS");
 
-        panelContenedor.add(new ListaUsuariosFrame(controller), "LISTA_USUARIOS");
+        listaUsuariosFrame = new ListaUsuariosFrame(controller);
+        panelContenedor.add(listaUsuariosFrame, "LISTA_USUARIOS");
+        
         panelContenedor.add(new UsuarioForm(controller), "USUARIOS");
         panelContenedor.add(new PrestamoForm(controller), "PRESTAMOS");
 
@@ -115,6 +118,7 @@ public class MainFrame extends JFrame {
         });
 
         btnVerUsuario.addActionListener(e -> {
+        	 listaUsuariosFrame.refrescar(); 
             cardLayout.show(panelContenedor, "LISTA_USUARIOS");
         });
 
