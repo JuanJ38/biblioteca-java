@@ -28,9 +28,14 @@ public class Usuario {
     public void setNombre(String nombre) { this.nombre = nombre; }
     public void setCorreo(String correo) { this.correo = correo; }
 
-    @Override
+   /*  @Override
     public String toString() {
         return "Usuario [ID=" + id + ", Nombre=" + nombre + ", Correo=" + correo + "]";
-    }	
+    }	*/
+    
+    @Override
+    public String toString() {
+        return nombre; // 🔹 lo que se mostrará en el combo
+    }
 
 }

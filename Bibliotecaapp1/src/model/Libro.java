@@ -34,12 +34,15 @@ public class Libro {
 	    public void setAutor(String autor) { this.autor = autor; }
 	    public void setDisponible(boolean disponible) { this.disponible = disponible; }
 
-	    @Override
+	   /* @Override
 	    public String toString() {
 	        return "Libro [ID=" + id + ", Título=" + titulo + ", Autor=" + autor + ", Disponible=" + disponible + "]";
+	    }*/
+	
+	    @Override
+	    public String toString() {
+	        return titulo; // 🔹 lo que se mostrará en el combo
 	    }
-	
-	
 	
 	
 	
