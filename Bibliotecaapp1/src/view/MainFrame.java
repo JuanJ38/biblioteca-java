@@ -5,25 +5,34 @@ import controller.BibliotecaController;
 import util.ExportarExcel;
 import java.util.ArrayList;
 import model.Libro;
-import java.awt.Dimension;
+import java.awt.*;
+
 public class MainFrame extends JFrame {
 
     private BibliotecaController controller = new BibliotecaController();
     private String rol;
 
-    public MainFrame(String rol) {
-    	this.rol = rol;
-        setTitle("Sistema de Biblioteca");
-        setSize(400, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // centrar
+    private CardLayout cardLayout;
+    private JPanel panelContenedor;
 
-        // Panel
-        JPanel panel = new JPanel();
-        //ordena los botones
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        
-     // BOTONES
+    public MainFrame(String rol) {
+        this.rol = rol;
+
+        setTitle("Sistema de Biblioteca");
+        setSize(900, 500); // 🔥 más ancho ahora
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        setLayout(new BorderLayout()); // 🔥 IMPORTANTE
+
+        // =========================
+        // 🔵 PANEL IZQUIERDO (MENÚ)
+        // =========================
+        JPanel panelMenu = new JPanel();
+        panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
+        panelMenu.setPreferredSize(new Dimension(220, 0));
+
+        // BOTONES
         JButton btnAgregarLibro = new JButton("Agregar Libro");
         JButton btnVerLibros = new JButton("Ver Libros");
         JButton btnVerUsuario = new JButton("Ver Usuario");
@@ -32,16 +41,6 @@ public class MainFrame extends JFrame {
         JButton btnSalir = new JButton("Salir");
         JButton btnExcel = new JButton("Exportar Libros a Excel");
 
-        // 🔧 TAMAÑOS PERSONALIZADOS
-        btnAgregarLibro.setMaximumSize(new Dimension(280, 50));
-        btnVerLibros.setMaximumSize(new Dimension(260, 45));
-        btnVerUsuario.setMaximumSize(new Dimension(260, 45));
-        btnAgregarUsuario.setMaximumSize(new Dimension(260, 45));
-        btnPrestar.setMaximumSize(new Dimension(240, 40));
-        btnSalir.setMaximumSize(new Dimension(200, 35));
-        btnExcel.setMaximumSize(new Dimension(300, 45));
-
-        // 🔧 CENTRAR BOTONES HORIZONTAL
         JButton[] botones = {
             btnAgregarLibro, btnVerLibros, btnVerUsuario,
             btnAgregarUsuario, btnPrestar, btnSalir, btnExcel
@@ -49,70 +48,82 @@ public class MainFrame extends JFrame {
 
         for (JButton b : botones) {
             b.setAlignmentX(JButton.CENTER_ALIGNMENT);
+            b.setMaximumSize(new Dimension(200, 40));
         }
 
-        // 📌 AGREGAR ESPACIO  VETICAL Y BOTONES (CON ROLES)
-        panel.add(Box.createVerticalStrut(20));
-        panel.add(btnAgregarLibro);
+        panelMenu.add(Box.createVerticalStrut(20));
+        panelMenu.add(btnAgregarLibro);
 
-        panel.add(Box.createVerticalStrut(15));
-        panel.add(btnVerLibros);
+        panelMenu.add(Box.createVerticalStrut(15));
+        panelMenu.add(btnVerLibros);
 
         if (!rol.equals("USER")) {
-            panel.add(Box.createVerticalStrut(15));
-            panel.add(btnVerUsuario);
+            panelMenu.add(Box.createVerticalStrut(15));
+            panelMenu.add(btnVerUsuario);
 
-            panel.add(Box.createVerticalStrut(15));
-            panel.add(btnAgregarUsuario);
+            panelMenu.add(Box.createVerticalStrut(15));
+            panelMenu.add(btnAgregarUsuario);
         }
 
-        panel.add(Box.createVerticalStrut(15));
-        panel.add(btnPrestar);
+        panelMenu.add(Box.createVerticalStrut(15));
+        panelMenu.add(btnPrestar);
 
-        panel.add(Box.createVerticalStrut(15));
-        panel.add(btnSalir);
+        panelMenu.add(Box.createVerticalStrut(15));
+        panelMenu.add(btnExcel);
 
-        panel.add(Box.createVerticalStrut(15));
-        panel.add(btnExcel);
+        panelMenu.add(Box.createVerticalStrut(15));
+        panelMenu.add(btnSalir);
+
+        add(panelMenu, BorderLayout.WEST);
+
+        // =========================
+        // 🟢 PANEL DERECHO (DINÁMICO)
+        // =========================
+        cardLayout = new CardLayout();
+        panelContenedor = new JPanel(cardLayout);
+
+        // Panel inicial
+        JPanel panelInicio = new JPanel();
+        panelInicio.add(new JLabel("BIENVENIDO AL SISTEMA"));
+
+        panelContenedor.add(panelInicio, "INICIO");
         
-        
-       
-        add(panel);
+        panelContenedor.add(new LibroForm(controller), "LIBRO");
 
-        // EVENTOS 🔥
+        add(panelContenedor, BorderLayout.CENTER);
+
+        // =========================
+        // 🔥 EVENTOS (TEMPORALES)
+        // =========================
         btnAgregarLibro.addActionListener(e -> {
-            new LibroForm(controller).setVisible(true);
+            cardLayout.show(panelContenedor, "LIBRO");
         });
 
         btnVerLibros.addActionListener(e -> {
-            new ListaLibrosFrame(controller).setVisible(true);
+            cardLayout.show(panelContenedor, "INICIO");
         });
-        
-        
+
         btnVerUsuario.addActionListener(e -> {
-            new ListaUsuariosFrame(controller).setVisible(true);
+            cardLayout.show(panelContenedor, "INICIO");
         });
 
         btnAgregarUsuario.addActionListener(e -> {
-            new UsuarioForm(controller).setVisible(true);
+            cardLayout.show(panelContenedor, "INICIO");
         });
 
         btnPrestar.addActionListener(e -> {
-            new PrestamoForm(controller).setVisible(true);
+            cardLayout.show(panelContenedor, "INICIO");
         });
 
         btnSalir.addActionListener(e -> {
             System.exit(0);
         });
-        
+
         btnExcel.addActionListener(e -> {
             ArrayList<Libro> libros = controller.obtenerLibros();
             ExportarExcel.exportarLibros(libros);
 
             JOptionPane.showMessageDialog(null, "Excel generado correctamente");
         });
-        
-        
     }
-    
 }
