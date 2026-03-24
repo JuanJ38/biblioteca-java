@@ -6,6 +6,8 @@ import util.ExportarExcel;
 import java.util.ArrayList;
 import model.Libro;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
 
@@ -15,7 +17,6 @@ public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel panelContenedor;
 
-    // 🔥 REFERENCIA AL PANEL (IMPORTANTE)
     private ListaLibrosFrame listaLibrosFrame;
     private ListaUsuariosFrame listaUsuariosFrame;
 
@@ -23,75 +24,89 @@ public class MainFrame extends JFrame {
         this.rol = rol;
 
         setTitle("Sistema de Biblioteca");
-        setSize(900, 500);
+        setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
         // =========================
-        // 🔵 PANEL IZQUIERDO (MENÚ)
+        // HEADER
+        // =========================
+        JPanel header = new JPanel();
+        header.setBackground(new Color(0, 150, 150));
+        header.setPreferredSize(new Dimension(0, 60));
+        header.setLayout(new BorderLayout());
+
+        JLabel titulo = new JLabel("  SISTEMA DE BIBLIOTECA");
+        titulo.setForeground(Color.WHITE);
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
+
+        header.add(titulo, BorderLayout.WEST);
+
+        add(header, BorderLayout.NORTH);
+
+        // =========================
+        //  SIDEBAR
         // =========================
         JPanel panelMenu = new JPanel();
+        panelMenu.setBackground(new Color(30, 30, 30));
         panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
-        panelMenu.setPreferredSize(new Dimension(200, 0));
+        panelMenu.setPreferredSize(new Dimension(220, 0));
 
-        JButton btnAgregarLibro = new JButton("Agregar Libro");
-        JButton btnVerLibros = new JButton("Ver Libros");
-        JButton btnVerUsuario = new JButton("Ver Usuario");
-        JButton btnAgregarUsuario = new JButton("Agregar Usuario");
-        JButton btnPrestar = new JButton("Prestar Libro");
-        JButton btnSalir = new JButton("Salir");
-        JButton btnExcel = new JButton("Exportar Libros a Excel");
-
-        JButton[] botones = {
-            btnAgregarLibro, btnVerLibros, btnVerUsuario,
-            btnAgregarUsuario, btnPrestar, btnSalir, btnExcel
-        };
-
-        for (JButton b : botones) {
-            b.setAlignmentX(JButton.CENTER_ALIGNMENT);
-            b.setMaximumSize(new Dimension(200, 40));
-        }
+        JLabel lblUser = new JLabel("   Usuario: " + rol);
+        lblUser.setForeground(Color.WHITE);
+        lblUser.setFont(new Font("Segoe UI", Font.BOLD, 14));
 
         panelMenu.add(Box.createVerticalStrut(20));
-        panelMenu.add(btnAgregarLibro);
+        panelMenu.add(lblUser);
+        panelMenu.add(Box.createVerticalStrut(20));
 
-        panelMenu.add(Box.createVerticalStrut(15));
+        // =========================
+        //  BOTONES PRO
+        // =========================
+        JButton btnAgregarLibro = crearBoton("Agregar Libro");
+        JButton btnVerLibros = crearBoton("Ver Libros");
+        JButton btnVerUsuario = crearBoton("Ver Usuario");
+        JButton btnAgregarUsuario = crearBoton("Agregar Usuario");
+        JButton btnPrestar = crearBoton("Prestar Libro");
+        JButton btnExcel = crearBoton("Exportar Excel");
+        JButton btnSalir = crearBoton("Salir");
+
+        panelMenu.add(btnAgregarLibro);
+        panelMenu.add(Box.createVerticalStrut(10));
         panelMenu.add(btnVerLibros);
+        panelMenu.add(Box.createVerticalStrut(10));
 
         if (!rol.equals("USER")) {
-            panelMenu.add(Box.createVerticalStrut(15));
-            panelMenu.add(btnVerUsuario);
+        	panelMenu.add(btnVerUsuario);
+            panelMenu.add(Box.createVerticalStrut(10));
 
-            panelMenu.add(Box.createVerticalStrut(15));
             panelMenu.add(btnAgregarUsuario);
+            panelMenu.add(Box.createVerticalStrut(10));
         }
 
-        panelMenu.add(Box.createVerticalStrut(15));
         panelMenu.add(btnPrestar);
-
-        panelMenu.add(Box.createVerticalStrut(15));
+        panelMenu.add(Box.createVerticalStrut(10));
         panelMenu.add(btnExcel);
-
-        panelMenu.add(Box.createVerticalStrut(15));
+        panelMenu.add(Box.createVerticalGlue());
         panelMenu.add(btnSalir);
 
         add(panelMenu, BorderLayout.WEST);
 
         // =========================
-        // 🟢 PANEL DERECHO (DINÁMICO)
+        // 🟢 CONTENIDO
         // =========================
         cardLayout = new CardLayout();
         panelContenedor = new JPanel(cardLayout);
+        panelContenedor.setBackground(Color.WHITE);
 
-        // Panel inicial
-        JPanel panelInicio = new JPanel();
-        panelInicio.add(new JLabel("BIENVENIDO AL SISTEMA"));
+        JPanel panelInicio = new JPanel(new GridBagLayout());
+        JLabel bienvenida = new JLabel("BIENVENIDO AL SISTEMA");
+        bienvenida.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        panelInicio.add(bienvenida);
 
         panelContenedor.add(panelInicio, "INICIO");
 
-        // 🔥 GUARDAMOS REFERENCIA
         panelContenedor.add(new LibroForm(controller), "LIBRO");
 
         listaLibrosFrame = new ListaLibrosFrame(controller);
@@ -99,7 +114,7 @@ public class MainFrame extends JFrame {
 
         listaUsuariosFrame = new ListaUsuariosFrame(controller);
         panelContenedor.add(listaUsuariosFrame, "LISTA_USUARIOS");
-        
+
         panelContenedor.add(new UsuarioForm(controller), "USUARIOS");
         panelContenedor.add(new PrestamoForm(controller), "PRESTAMOS");
 
@@ -108,37 +123,59 @@ public class MainFrame extends JFrame {
         // =========================
         // 🔥 EVENTOS
         // =========================
-        btnAgregarLibro.addActionListener(e -> {
-            cardLayout.show(panelContenedor, "LIBRO");
-        });
+        btnAgregarLibro.addActionListener(e -> cardLayout.show(panelContenedor, "LIBRO"));
 
         btnVerLibros.addActionListener(e -> {
-            listaLibrosFrame.refrescar(); // 🔥 ACTUALIZA LA TABLA
+            listaLibrosFrame.refrescar();
             cardLayout.show(panelContenedor, "LISTA_LIBROS");
         });
 
         btnVerUsuario.addActionListener(e -> {
-        	 listaUsuariosFrame.refrescar(); 
+            listaUsuariosFrame.refrescar();
             cardLayout.show(panelContenedor, "LISTA_USUARIOS");
         });
 
-        btnAgregarUsuario.addActionListener(e -> {
-            cardLayout.show(panelContenedor, "USUARIOS");
-        });
+        btnAgregarUsuario.addActionListener(e -> cardLayout.show(panelContenedor, "USUARIOS"));
 
-        btnPrestar.addActionListener(e -> {
-            cardLayout.show(panelContenedor, "PRESTAMOS");
-        });
+        btnPrestar.addActionListener(e -> cardLayout.show(panelContenedor, "PRESTAMOS"));
 
-        btnSalir.addActionListener(e -> {
-            System.exit(0);
-        });
+        btnSalir.addActionListener(e -> System.exit(0));
 
         btnExcel.addActionListener(e -> {
             ArrayList<Libro> libros = controller.obtenerLibros();
             ExportarExcel.exportarLibros(libros);
-
             JOptionPane.showMessageDialog(null, "Excel generado correctamente");
         });
+    }
+
+    // =========================
+    // 🔥 BOTÓN ESTILO PRO
+    // =========================
+    private JButton crearBoton(String texto) {
+        JButton btn = new JButton(texto);
+
+        btn.setMaximumSize(new Dimension(180, 45));
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        btn.setFocusPainted(false);
+        btn.setBackground(new Color(60, 63, 65)); // 🔥 gris diferente al fondo
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        btn.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+
+        // 🔥 HOVER EFECTO
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                btn.setBackground(new Color(0, 180, 180)); // turqueza
+            }
+
+            public void mouseExited(MouseEvent e) {
+                btn.setBackground(new Color(60, 63, 65));
+            }
+        });
+
+        return btn;
     }
 }
