@@ -38,14 +38,25 @@ public class UsuarioForm extends JPanel { // 🔥 CAMBIO CLAVE
             String nombre = txtNombre.getText();
             String correo = txtCorreo.getText();
 
-            if (nombre.isEmpty() || correo.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Complete todos los campos");
+            if (nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío", "Error", JOptionPane.WARNING_MESSAGE);
+                txtNombre.requestFocus();
+                return;
+            }
+
+            if (correo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El correo no puede estar vacío", "Error", JOptionPane.WARNING_MESSAGE);
+                txtCorreo.requestFocus();
                 return;
             }
 
             controller.agregarUsuario(nombre, correo);
-
-            JOptionPane.showMessageDialog(null, "Usuario agregado");
+            JOptionPane.showMessageDialog(this, "Usuario agregado correctamente!");
+            
+            //Limpiar campos
+            txtNombre.setText("");
+            txtCorreo.setText("");
+            txtNombre.requestFocus();
         });
     }
 }
