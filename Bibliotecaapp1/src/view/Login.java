@@ -31,11 +31,20 @@ public class Login extends JFrame {
         JLabel descripcion = new JLabel("BIENVENIDOS");
         descripcion.setForeground(Color.WHITE);
         descripcion.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        ImageIcon icon = new ImageIcon(getClass().getResource("/resources/login.jpeg"));
+        Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH); // tamaño deseado
+        JLabel lblImagen = new JLabel(new ImageIcon(img));
+        lblImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panelIzquierdo.add(Box.createVerticalStrut(50));
         panelIzquierdo.add(titulo);
         panelIzquierdo.add(Box.createVerticalStrut(20));
         panelIzquierdo.add(descripcion);
+        
+        panelIzquierdo.add(Box.createVerticalStrut(20));
+        panelIzquierdo.add(lblImagen);
+        panelIzquierdo.add(Box.createVerticalGlue()); // empuja contenido hacia arriba
 
         add(panelIzquierdo, BorderLayout.WEST);
 
