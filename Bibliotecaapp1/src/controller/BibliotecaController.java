@@ -7,42 +7,75 @@ import dao.PrestamoDAO;
 import model.Libro;
 import model.Usuario;
 import model.Prestamo;
-
+import service.PrestamoService;
 public class BibliotecaController {
 
     private LibroDAO libroDAO = new LibroDAO();
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
     private PrestamoDAO prestamoDAO = new PrestamoDAO();
+    
+    private service.UsuarioService usuarioService = new service.UsuarioService();
+    //se agrega por el service 
+    
+    private service.LibroService libroService = new service.LibroService();
 
     // ==============================
     // LIBROS
     // ==============================
 
-    // Agregar un libro nuevo
-    public void agregarLibro(String titulo, String autor) {
+    // Agregar un libro nuevo , lo comenmos para cambiar a servie 
+    
+    /*public void agregarLibro(String titulo, String autor) {
         Libro libro = new Libro(titulo, autor);
-        libroDAO.guardarLibro(libro);
+        libroDAO.guardarLibro(libro); 
+    }*/
+    
+    public boolean agregarLibro(String titulo, String autor) {
+        return libroService.guardarLibro(titulo, autor);
     }
+    
+    
 
-    // Obtener lista de libros
-    public ArrayList<Libro> obtenerLibros() {
+    // Obtener lista de libros , agregando service 
+   /* public ArrayList<Libro> obtenerLibros() {
         return libroDAO.listarLibros();
+    } */
+    public ArrayList<Libro> obtenerLibros() {
+        return libroService.obtenerLibros();
     }
+    
+    
 
     // ==============================
     // USUARIOS
     // ==============================
 
-    // Agregar un usuario nuevo
-    public void agregarUsuario(String nombre, String correo) {
+    // Agregar un usuario nuevo , se coemnta para agregar service 
+    
+    public boolean agregarUsuario(String nombre, String correo) {
+        return usuarioService.guardarUsuario(nombre, correo);
+    }
+    
+    
+    
+    /*public void agregarUsuario(String nombre, String correo) {
         Usuario usuario = new Usuario(nombre, correo);
         usuarioDAO.guardarUsuario(usuario);
-    }
+    } */
 
     // Obtener lista de usuarios
-    public ArrayList<Usuario> obtenerUsuarios() {
+
+
+    
+   /* public ArrayList<Usuario> obtenerUsuarios() {
         return usuarioDAO.listarUsuarios();
+    } */
+    
+    public ArrayList<Usuario> obtenerUsuarios() {
+        return usuarioService.obtenerUsuarios();
     }
+
+    
 
     // ==============================
     // PRÉSTAMOS
@@ -61,11 +94,16 @@ public class BibliotecaController {
         }
 
         if (libro != null && libro.isDisponible()) {
-            // Registrar préstamo
-            prestamoDAO.registrarPrestamo(idLibro, idUsuario);
+        	
+        	
+        	PrestamoService service = new PrestamoService();
+        	return service.prestarLibro(idLibro, idUsuario);
+        	
+            // Registrar préstamo , se puso comentario ya que se creo service
+            //prestamoDAO.registrarPrestamo(idLibro, idUsuario);
             // Actualizar disponibilidad
-            libroDAO.actualizarDisponibilidad(idLibro, false);
-            return true;
+           // libroDAO.actualizarDisponibilidad(idLibro, false);
+           // return true;
         } else {
             return false; // libro no disponible
         }
@@ -76,18 +114,35 @@ public class BibliotecaController {
         return prestamoDAO.listarPrestamos();
     }
     
-    public void eliminarLibro(int idLibro) {
-        libroDAO.eliminarLibro(idLibro);
+    // se comenta para usar service 
+    
+   /* public void eliminarLibro(int idLibro) {
+        libroDAO.eliminarLibro(idLibro); 
+    }*/
+    
+    public boolean eliminarLibro(int idLibro) {
+        return libroService.eliminarLibro(idLibro);
     }
     
-    public void actualizarLibro(Libro libro) {
+    //se agrega el service 
+   /* public void actualizarLibro(Libro libro) {
         libroDAO.actualizarLibro(libro);
+    }*/
+    
+    public boolean actualizarLibro(Libro libro) {
+        return libroService.actualizarLibro(libro);
     }
+    
     
     public String login(String usuario, String password) {
+        return usuarioService.validarUsuario(usuario, password);
+    }
+    
+    
+   /* public String login(String usuario, String password) {
         dao.UsuarioDAO dao = new dao.UsuarioDAO();
         return dao.validar(usuario, password);
-    }
+    } */
     
     
 }

@@ -36,10 +36,28 @@ public class LibroForm extends JPanel { // 🔥 CAMBIO CLAVE
         btnGuardar.addActionListener(e -> {
             String titulo = txtTitulo.getText();
             String autor = txtAutor.getText();
+            
+            if (titulo.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El título no puede estar vacío", "Error", JOptionPane.WARNING_MESSAGE);
+                txtTitulo.requestFocus();
+                return;
+            }
+
+            if (autor.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El autor no puede estar vacío", "Error", JOptionPane.WARNING_MESSAGE);
+                txtAutor.requestFocus();
+                return;
+            }
 
             controller.agregarLibro(titulo, autor);
 
-            JOptionPane.showMessageDialog(null, "Libro agregado"); // 🔥 cambio aquí
+            JOptionPane.showMessageDialog(this, "Libro agregado correctamente!");
+            
+            
+         //  Limpiar campos
+            txtTitulo.setText("");
+            txtAutor.setText("");
+            txtTitulo.requestFocus();
         });
     }
 }
