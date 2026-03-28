@@ -19,10 +19,11 @@ public class LibroDAO {
             ps.setBoolean(3, libro.isDisponible());
 
             ps.executeUpdate();
-            System.out.println("Libro guardado correctamente.");
+            System.out.println("✅ Libro guardado correctamente.");
 
         } catch (SQLException e) {
-            System.out.println("Error al guardar libro: " + e.getMessage());
+            System.out.println("❌ Error al guardar libro:");
+            e.printStackTrace();
         }
     }
 
@@ -36,16 +37,18 @@ public class LibroDAO {
              ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
-                lista.add(new Libro(
+                Libro libro = new Libro(
                         rs.getInt("id"),
                         rs.getString("titulo"),
                         rs.getString("autor"),
                         rs.getBoolean("disponible")
-                ));
+                );
+                lista.add(libro);
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al listar libros: " + e.getMessage());
+            System.out.println("❌ Error al listar libros:");
+            e.printStackTrace();
         }
 
         return lista;
@@ -60,13 +63,17 @@ public class LibroDAO {
 
             ps.setBoolean(1, disponible);
             ps.setInt(2, idLibro);
+
             ps.executeUpdate();
+            System.out.println("✅ Disponibilidad actualizada.");
 
         } catch (SQLException e) {
-            System.out.println("Error al actualizar libro: " + e.getMessage());
+            System.out.println("❌ Error al actualizar disponibilidad:");
+            e.printStackTrace();
         }
     }
-    
+
+    // Eliminar libro
     public void eliminarLibro(int idLibro) {
         String sql = "DELETE FROM libros WHERE id = ?";
 
@@ -75,12 +82,15 @@ public class LibroDAO {
 
             ps.setInt(1, idLibro);
             ps.executeUpdate();
+            System.out.println("✅ Libro eliminado.");
 
         } catch (SQLException e) {
-            System.out.println("Error al eliminar libro: " + e.getMessage());
+            System.out.println("❌ Error al eliminar libro:");
+            e.printStackTrace();
         }
     }
-    
+
+    // Actualizar libro completo
     public void actualizarLibro(Libro libro) {
         String sql = "UPDATE libros SET titulo = ?, autor = ?, disponible = ? WHERE id = ?";
 
@@ -93,12 +103,11 @@ public class LibroDAO {
             ps.setInt(4, libro.getId());
 
             ps.executeUpdate();
+            System.out.println("✅ Libro actualizado.");
 
         } catch (SQLException e) {
-            System.out.println("Error al actualizar libro: " + e.getMessage());
+            System.out.println("❌ Error al actualizar libro:");
+            e.printStackTrace();
         }
     }
-    
-    
-    
 }

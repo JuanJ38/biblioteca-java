@@ -6,12 +6,10 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    // Cadena de conexión con usuario y contraseña
-    private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=BibliotecaDB;encrypt=false";
-    private static final String USER = "sa";
+    private static final String URL = "jdbc:mysql://localhost:3306/BibliotecaDB?useSSL=false&serverTimezone=UTC";
+    private static final String USER = "root";
     private static final String PASSWORD = "2025root";
 
-    // Método para obtener la conexión
     public static Connection conectar() {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
