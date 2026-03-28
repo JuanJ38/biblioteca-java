@@ -5,6 +5,6 @@ import view.Login;
 
 public class Main {
     public static void main(String[] args) {
-        new MainFrame("USER").setVisible(true);
+        new Login().setVisible(true);
     }
 }

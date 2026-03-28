@@ -77,5 +77,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/JuanJose/Downloads/sqljdbc_13.2.1.0_enu/sqljdbc_13.2/enu/jars/mssql-jdbc-13.2.1.jre11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/JuanJose/Downloads/mysql-connector-j-9.6.0/mysql-connector-j-9.6.0/mysql-connector-j-9.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
