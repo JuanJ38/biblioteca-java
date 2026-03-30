@@ -4,36 +4,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Clase de utilidad para gestionar la conexión a la base de datos SQL Server.
- */
 public class ConexionBD {
 
-    // Configuración de la cadena de conexión
-    private static final String URL = "jdbc:sqlserver://localhost:1433;"
-            + "databaseName=BibliotecaDB;"
-            + "encrypt=false;"
-            + "trustServerCertificate=true;";
-    
-    private static final String USER = "sa";
-    private static final String PASSWORD = "2025root"; 
+    private static final String URL = "jdbc:mysql://localhost:3306/BibliotecaDB?useSSL=false&serverTimezone=UTC";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root2025";
 
-    /**
-     * Establece y retorna una conexión con SQL Server.
-     * @return Connection objeto de conexión o null si falla.
-     */
     public static Connection conectar() {
-        Connection cn = null;
         try {
-            // Carga opcional del driver (recomendado en entornos antiguos o manuales)
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            cn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión exitosa a BibliotecaDB");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error: No se encontró el driver de SQL Server: " + e.getMessage());
+            return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            System.out.println("Error de conexión a la BD: " + e.getMessage());
+            System.out.println("Error de conexión a BD: " + e.getMessage());
+            return null;
         }
-        return cn;
     }
 }
