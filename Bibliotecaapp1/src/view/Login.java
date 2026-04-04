@@ -16,9 +16,9 @@ public class Login extends JFrame {
 
         setLayout(new BorderLayout());
 
-        // =========================
-        // 🔵 PANEL IZQUIERDO
-        // =========================
+        
+        //  PANEL IZQUIERDO
+        
         JPanel panelIzquierdo = new JPanel();
         panelIzquierdo.setBackground(new Color(40, 40, 40));
         panelIzquierdo.setPreferredSize(new Dimension(300, 0));
@@ -49,9 +49,9 @@ public class Login extends JFrame {
 
         add(panelIzquierdo, BorderLayout.WEST);
 
-        // =========================
+        
         //  PANEL DERECHO
-        // =========================
+        
         JPanel panelDerecho = new JPanel(new GridBagLayout());
         panelDerecho.setBackground(Color.WHITE);
 
@@ -92,9 +92,9 @@ public class Login extends JFrame {
 
         add(panelDerecho, BorderLayout.CENTER);
 
-        // =========================
-        // 🔥 EVENTO LOGIN
-        // =========================
+        
+        //  EVENTO LOGIN
+       
         btnLogin.addActionListener(e -> {
             String usuario = txtUsuario.getText();
             String password = new String(txtPassword.getPassword());
