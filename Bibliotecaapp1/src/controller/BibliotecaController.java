@@ -144,5 +144,15 @@ public class BibliotecaController {
         return dao.validar(usuario, password);
     } */
     
-    
+    public int contarLibros() {
+        return libroService.obtenerLibros().size();
+    }
+
+    public int contarUsuarios() {
+        return usuarioService.obtenerUsuarios().size();
+    }
+
+    public int contarPrestamos() {
+        return prestamoDAO.listarPrestamos().size();
+    }
 }

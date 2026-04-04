@@ -101,11 +101,7 @@ public class MainFrame extends JFrame {
         panelContenedor = new JPanel(cardLayout);
         panelContenedor.setBackground(Color.WHITE);
 
-        JPanel panelInicio = new JPanel(new GridBagLayout());
-        JLabel bienvenida = new JLabel("BIENVENIDO AL SISTEMA");
-        bienvenida.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        panelInicio.add(bienvenida);
-
+        PanelInicio panelInicio = new PanelInicio(controller, rol);
         panelContenedor.add(panelInicio, "INICIO");
 
         panelContenedor.add(new LibroForm(controller), "LIBRO");
