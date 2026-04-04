@@ -34,4 +34,15 @@ public class UsuarioService {
             return null;
         }
     }
+    
+    
+ // Eliminar usuario
+    public boolean eliminarUsuario(int idUsuario) {
+        try {
+            return usuarioDAO.eliminarUsuario(idUsuario);
+        } catch (Exception e) {
+            System.out.println("Error en UsuarioService (eliminarUsuario): " + e.getMessage());
+            return false;
+        }
+    }
 }
