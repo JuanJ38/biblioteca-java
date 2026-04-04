@@ -21,7 +21,7 @@ public class ListaLibrosFrame extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        // ── PANEL SUPERIOR: título + buscador ─────────────
+        //  PANEL SUPERIOR: título + buscador 
         JPanel header = new JPanel(new BorderLayout(12, 0));
         header.setBackground(new Color(0, 150, 150));
         header.setBorder(BorderFactory.createEmptyBorder(12, 18, 12, 18));
@@ -66,7 +66,7 @@ public class ListaLibrosFrame extends JPanel {
         header.add(txtBuscar, BorderLayout.EAST);
         add(header, BorderLayout.NORTH);
 
-        // ── TABLA ─────────────────────────────────────────
+        //  TABLA 
         String[] columnas = {"ID", "Título", "Autor", "Disponibilidad"};
         modelo = new DefaultTableModel(columnas, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -145,7 +145,7 @@ public class ListaLibrosFrame extends JPanel {
         scroll.getViewport().setBackground(Color.WHITE);
         add(scroll, BorderLayout.CENTER);
 
-        // ── BOTONES ───────────────────────────────────────
+        //  BOTONES 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         panelBotones.setBackground(new Color(248, 250, 250));
         panelBotones.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
@@ -159,7 +159,7 @@ public class ListaLibrosFrame extends JPanel {
 
         cargarLibros();
 
-        // ── BUSCADOR: DocumentListener limpio ─────────────
+        //  BUSCADOR: DocumentListener limpio 
         txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void insertUpdate(javax.swing.event.DocumentEvent e)  { ejecutarFiltro(); }
             public void removeUpdate(javax.swing.event.DocumentEvent e)  { ejecutarFiltro(); }
@@ -180,7 +180,7 @@ public class ListaLibrosFrame extends JPanel {
             }
         });
 
-        // ── EVENTO EDITAR ─────────────────────────────────
+        // EVENTO EDITAR 
         btnEditar.addActionListener(e -> {
             int fila = tabla.getSelectedRow();
             if (fila == -1) {
@@ -218,7 +218,7 @@ public class ListaLibrosFrame extends JPanel {
             refrescar();
         });
 
-        // ── EVENTO ELIMINAR ───────────────────────────────
+        //  EVENTO ELIMINAR 
         btnEliminar.addActionListener(e -> {
             int fila = tabla.getSelectedRow();
             if (fila == -1) {

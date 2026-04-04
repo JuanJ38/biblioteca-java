@@ -21,7 +21,7 @@ public class ListaUsuariosFrame extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        // ── HEADER ────────────────────────────────────────
+        //  HEADER 
         JPanel header = new JPanel(new BorderLayout(12, 0));
         header.setBackground(new Color(40, 70, 100));
         header.setBorder(BorderFactory.createEmptyBorder(12, 18, 12, 18));
@@ -64,7 +64,7 @@ public class ListaUsuariosFrame extends JPanel {
         header.add(txtBuscar, BorderLayout.EAST);
         add(header, BorderLayout.NORTH);
 
-        // ── TABLA ─────────────────────────────────────────
+        //  TABLA 
         String[] columnas = {"ID", "Nombre", "Correo electrónico"};
         modelo = new DefaultTableModel(columnas, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
@@ -164,7 +164,7 @@ public class ListaUsuariosFrame extends JPanel {
         scroll.getViewport().setBackground(Color.WHITE);
         add(scroll, BorderLayout.CENTER);
 
-        // ── BOTONES ───────────────────────────────────────
+        //  BOTONES 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         panelBotones.setBackground(new Color(248, 250, 252));
         panelBotones.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
@@ -176,7 +176,7 @@ public class ListaUsuariosFrame extends JPanel {
 
         cargarUsuarios();
 
-        // ── BUSCADOR ─────────────────────────────────────
+        //  BUSCADOR 
         txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void insertUpdate(javax.swing.event.DocumentEvent e)  { ejecutarFiltro(); }
             public void removeUpdate(javax.swing.event.DocumentEvent e)  { ejecutarFiltro(); }
@@ -196,7 +196,7 @@ public class ListaUsuariosFrame extends JPanel {
             }
         });
 
-        // ── EVENTO ELIMINAR ───────────────────────────────
+        //  EVENTO ELIMINAR 
         btnEliminar.addActionListener(e -> {
             int fila = tabla.getSelectedRow();
             if (fila == -1) {
