@@ -30,9 +30,9 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
         setResizable(false);
 
-        // =========================
+       
         // HEADER
-        // =========================
+        
         JPanel header = new JPanel();
         header.setBackground(new Color(0, 150, 150));
         header.setPreferredSize(new Dimension(0, 60));
@@ -46,9 +46,9 @@ public class MainFrame extends JFrame {
 
         add(header, BorderLayout.NORTH);
 
-        // =========================
+        
         //  SIDEBAR
-        // =========================
+        
         JPanel panelMenu = new JPanel();
         panelMenu.setBackground(new Color(30, 30, 30));
         panelMenu.setLayout(new BoxLayout(panelMenu, BoxLayout.Y_AXIS));
@@ -62,9 +62,9 @@ public class MainFrame extends JFrame {
         panelMenu.add(lblUser);
         panelMenu.add(Box.createVerticalStrut(20));
 
-        // =========================
+        
         //  BOTONES PRO
-        // =========================
+        
         JButton btnAgregarLibro = crearBoton("Agregar Libro");
         JButton btnVerLibros = crearBoton("Ver Libros");
         JButton btnVerUsuario = crearBoton("Ver Usuario");
@@ -94,9 +94,9 @@ public class MainFrame extends JFrame {
 
         add(panelMenu, BorderLayout.WEST);
 
-        // =========================
+        
         // 🟢 CONTENIDO
-        // =========================
+        
         cardLayout = new CardLayout();
         panelContenedor = new JPanel(cardLayout);
         panelContenedor.setBackground(Color.WHITE);
@@ -117,9 +117,9 @@ public class MainFrame extends JFrame {
 
         add(panelContenedor, BorderLayout.CENTER);
 
-        // =========================
-        // 🔥 EVENTOS
-        // =========================
+        
+        //  EVENTOS
+        
         btnAgregarLibro.addActionListener(e -> cardLayout.show(panelContenedor, "LIBRO"));
 
         btnVerLibros.addActionListener(e -> {
@@ -145,9 +145,9 @@ public class MainFrame extends JFrame {
         });
     }
 
-    // =========================
-    // 🔥 BOTÓN ESTILO PRO
-    // =========================
+    
+    //  BOTÓN ESTILO PRO
+    
     private JButton crearBoton(String texto) {
         JButton btn = new JButton(texto);
 
@@ -155,14 +155,14 @@ public class MainFrame extends JFrame {
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         btn.setFocusPainted(false);
-        btn.setBackground(new Color(60, 63, 65)); // 🔥 gris diferente al fondo
+        btn.setBackground(new Color(60, 63, 65)); //  gris diferente al fondo
         btn.setForeground(Color.WHITE);
         btn.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         btn.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-        // 🔥 HOVER EFECTO
+        //  HOVER EFECTO
         btn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 btn.setBackground(new Color(0, 180, 180)); // turqueza

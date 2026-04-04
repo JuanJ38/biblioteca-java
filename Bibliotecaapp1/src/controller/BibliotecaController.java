@@ -23,7 +23,7 @@ public class BibliotecaController {
     // LIBROS
     // ==============================
 
-    // Agregar un libro nuevo , lo comenmos para cambiar a servie 
+    // Agregar un libro nuevo , lo comentamos para cambiar a servie 
     
     /*public void agregarLibro(String titulo, String autor) {
         Libro libro = new Libro(titulo, autor);
