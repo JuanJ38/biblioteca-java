@@ -10,7 +10,7 @@ public class PanelInicio extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        // === PARTE SUPERIOR: imagen + bienvenida ===
+        //  PARTE SUPERIOR: imagen + bienvenida 
         JPanel panelTop = new JPanel(new BorderLayout());
         panelTop.setBackground(new Color(0, 150, 150));
         panelTop.setPreferredSize(new Dimension(0, 160));
@@ -42,7 +42,7 @@ public class PanelInicio extends JPanel {
         panelTop.add(lblImg, BorderLayout.WEST);
         panelTop.add(panelTexto, BorderLayout.CENTER);
 
-        // === ESTADÍSTICAS ===
+        //  ESTADÍSTICAS 
         JPanel panelStats = new JPanel(new GridLayout(1, 3, 20, 0));
         panelStats.setBackground(Color.WHITE);
         panelStats.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
