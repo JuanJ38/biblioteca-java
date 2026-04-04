@@ -155,4 +155,8 @@ public class BibliotecaController {
     public int contarPrestamos() {
         return prestamoDAO.listarPrestamos().size();
     }
+    
+    public boolean eliminarUsuario(int idUsuario) {
+        return usuarioService.eliminarUsuario(idUsuario);
+    }
 }

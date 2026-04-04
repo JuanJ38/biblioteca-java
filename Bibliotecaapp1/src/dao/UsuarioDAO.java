@@ -76,4 +76,22 @@ public class UsuarioDAO {
 
         return null;
     }
+    
+    public boolean eliminarUsuario(int idUsuario) {
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+        try (Connection conn = ConexionBD.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (conn == null) return false;
+            ps.setInt(1, idUsuario);
+            int filas = ps.executeUpdate();
+            if (filas > 0) {
+                System.out.println("✅ Usuario con ID " + idUsuario + " eliminado.");
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            System.err.println("❌ Error al eliminar usuario: " + e.getMessage());
+            return false;
+        }
+    }
 }
