@@ -14,7 +14,7 @@ public class UsuarioForm extends JPanel {
         setBackground(Color.WHITE);
         setLayout(new GridBagLayout());
 
-        // === CARD CONTENEDOR ===
+        //  CARD CONTENEDOR 
         JPanel card = new JPanel();
         card.setBackground(Color.WHITE);
         card.setBorder(BorderFactory.createCompoundBorder(
@@ -84,7 +84,7 @@ public class UsuarioForm extends JPanel {
 
         add(card);
 
-        // === EVENTO ===
+        //  EVENTO 
         btnGuardar.addActionListener(e -> {
             String nombre = txtNombre.getText().trim();
             String correo = txtCorreo.getText().trim();

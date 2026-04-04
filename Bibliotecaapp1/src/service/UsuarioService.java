@@ -8,7 +8,7 @@ public class UsuarioService {
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-    // 🔹 Guardar un usuario nuevo
+    //  Guardar un usuario nuevo
     public boolean guardarUsuario(String nombre, String correo) {
         try {
             Usuario usuario = new Usuario(nombre, correo);
@@ -20,12 +20,12 @@ public class UsuarioService {
         }
     }
 
-    // 🔹 Obtener lista de usuarios
+    //  Obtener lista de usuarios
     public ArrayList<Usuario> obtenerUsuarios() {
         return usuarioDAO.listarUsuarios();
     }
 
-    // 🔹 Validar login
+    // Validar login
     public String validarUsuario(String usuario, String password) {
         try {
             return usuarioDAO.validar(usuario, password);
