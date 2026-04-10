@@ -8,43 +8,54 @@ public class LibroService {
 
     private LibroDAO libroDAO = new LibroDAO();
 
-    // 🔹 Guardar un libro nuevo
-    public boolean guardarLibro(String titulo, String autor) {
+    public boolean guardarLibro(String titulo, String autor, String imagen, String resena) {
         try {
-            // Crear objeto libro (disponible por defecto)
-            Libro libro = new Libro(titulo, autor);
+            if (titulo == null || titulo.trim().isEmpty()) return false;
+            if (autor  == null || autor.trim().isEmpty())  return false;
+            Libro libro = new Libro(titulo.trim(), autor.trim());
+            libro.setImagen(imagen != null ? imagen.trim() : "");
+            libro.setResena(resena != null ? resena.trim() : "");
             libroDAO.guardarLibro(libro);
             return true;
         } catch (Exception e) {
-            System.out.println("Error en LibroService (guardarLibro): " + e.getMessage());
+            System.out.println("Error LibroService (guardar): " + e.getMessage());
             return false;
         }
     }
 
-    // 🔹 Obtener lista de libros
     public ArrayList<Libro> obtenerLibros() {
         return libroDAO.listarLibros();
     }
 
-    // 🔹 Actualizar un libro existente
+    /** Solo libros disponibles para préstamo */
+    public ArrayList<Libro> obtenerDisponibles() {
+        return libroDAO.listarDisponibles();
+    }
+
+    /** Busca libros por título (ignora mayúsculas) */
+    public ArrayList<Libro> buscarPorTitulo(String titulo) {
+        if (titulo == null || titulo.trim().isEmpty()) return obtenerLibros();
+        return libroDAO.buscarPorTitulo(titulo.trim());
+    }
+
     public boolean actualizarLibro(Libro libro) {
         try {
+            if (libro.getTitulo() == null || libro.getTitulo().trim().isEmpty()) return false;
+            if (libro.getAutor()  == null || libro.getAutor().trim().isEmpty())  return false;
             libroDAO.actualizarLibro(libro);
             return true;
         } catch (Exception e) {
-            System.out.println("Error en LibroService (actualizarLibro): " + e.getMessage());
+            System.out.println("Error LibroService (actualizar): " + e.getMessage());
             return false;
         }
     }
 
-    // 🔹 Eliminar un libro por ID
-    public boolean eliminarLibro(int idLibro) {
-        try {
-            libroDAO.eliminarLibro(idLibro);
-            return true;
-        } catch (Exception e) {
-            System.out.println("Error en LibroService (eliminarLibro): " + e.getMessage());
-            return false;
-        }
+    public boolean eliminarLibro(int id) {
+        try { libroDAO.eliminarLibro(id); return true; }
+        catch (Exception e) { System.out.println("Error LibroService (eliminar): " + e.getMessage()); return false; }
+    }
+
+    public void actualizarDisponibilidad(int idLibro, boolean disponible) {
+        libroDAO.actualizarDisponibilidad(idLibro, disponible);
     }
 }

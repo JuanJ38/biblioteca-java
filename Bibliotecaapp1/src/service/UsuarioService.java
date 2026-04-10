@@ -8,24 +8,25 @@ public class UsuarioService {
 
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-    //  Guardar un usuario nuevo
+    /** Guarda un usuario con validación de campos */
     public boolean guardarUsuario(String nombre, String correo) {
         try {
-            Usuario usuario = new Usuario(nombre, correo);
-            usuarioDAO.guardarUsuario(usuario);
-            return true;
+            if (nombre == null || nombre.trim().isEmpty()) return false;
+            if (correo == null || correo.trim().isEmpty()) return false;
+            // Validación básica de correo (igual que @Email en Spring)
+            if (!correo.contains("@") || !correo.contains(".")) return false;
+            Usuario usuario = new Usuario(nombre.trim(), correo.trim().toLowerCase());
+            return usuarioDAO.guardarUsuario(usuario);
         } catch (Exception e) {
             System.out.println("Error en UsuarioService (guardarUsuario): " + e.getMessage());
             return false;
         }
     }
 
-    //  Obtener lista de usuarios
     public ArrayList<Usuario> obtenerUsuarios() {
         return usuarioDAO.listarUsuarios();
     }
 
-    // Validar login
     public String validarUsuario(String usuario, String password) {
         try {
             return usuarioDAO.validar(usuario, password);
@@ -34,15 +35,23 @@ public class UsuarioService {
             return null;
         }
     }
-    
-    
- // Eliminar usuario
+
     public boolean eliminarUsuario(int idUsuario) {
         try {
             return usuarioDAO.eliminarUsuario(idUsuario);
         } catch (Exception e) {
             System.out.println("Error en UsuarioService (eliminarUsuario): " + e.getMessage());
             return false;
+        }
+    }
+
+    /** Busca usuario por correo (igual que findByCorreo en Spring) */
+    public Usuario buscarPorCorreo(String correo) {
+        try {
+            return usuarioDAO.buscarPorCorreo(correo);
+        } catch (Exception e) {
+            System.out.println("Error en UsuarioService (buscarPorCorreo): " + e.getMessage());
+            return null;
         }
     }
 }
