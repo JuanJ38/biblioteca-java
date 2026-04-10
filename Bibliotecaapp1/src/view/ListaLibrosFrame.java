@@ -1,279 +1,270 @@
 package view;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import java.awt.*;
-import java.util.ArrayList;
-import model.Libro;
 import controller.BibliotecaController;
+import model.Libro;
+import util.*;
+
+import javax.swing.*;
+import javax.swing.table.*;
+import java.awt.*;
 
 public class ListaLibrosFrame extends JPanel {
 
-    private BibliotecaController controller;
+    private final BibliotecaController controller;
     private DefaultTableModel modelo;
     private JTable tabla;
     private boolean placeholderActivo = true;
 
     public ListaLibrosFrame(BibliotecaController controller) {
         this.controller = controller;
-        setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
+        setLayout(new BorderLayout(0, 0));
+        setBackground(new Color(248, 250, 252));
+        add(construirHeader(),  BorderLayout.NORTH);
+        add(construirTabla(),   BorderLayout.CENTER);
+        add(construirBotones(), BorderLayout.SOUTH);
+        cargarLibros();
+    }
 
-        //  PANEL SUPERIOR: título + buscador 
-        JPanel header = new JPanel(new BorderLayout(12, 0));
-        header.setBackground(new Color(0, 150, 150));
-        header.setBorder(BorderFactory.createEmptyBorder(12, 18, 12, 18));
+    private JPanel construirHeader() {
+        JPanel h = new JPanel(new BorderLayout(12, 0));
+        h.setBackground(new Color(15, 23, 42));
+        h.setBorder(BorderFactory.createEmptyBorder(14, 20, 14, 20));
 
-        JLabel lblTitulo = new JLabel("Listado de libros");
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        lblTitulo.setForeground(Color.WHITE);
+        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+        left.setOpaque(false);
+        JLabel ico = new JLabel("📖");
+        ico.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 18));
+        JLabel lbl = new JLabel("Catálogo de Libros");
+        lbl.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lbl.setForeground(Color.WHITE);
+        left.add(ico); left.add(lbl);
 
-        // Campo de búsqueda limpio — sin alpha, sin complicaciones
-        JTextField txtBuscar = new JTextField(20);
-        txtBuscar.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        txtBuscar.setPreferredSize(new Dimension(240, 32));
-        txtBuscar.setBackground(new Color(0, 120, 120));
-        txtBuscar.setForeground(new Color(200, 235, 235));
+        JTextField txtBuscar = new JTextField(22);
+        txtBuscar.setFont(Tema.FONT_BODY);
+        txtBuscar.setPreferredSize(new Dimension(260, 36));
+        txtBuscar.setBackground(new Color(30, 41, 59));
+        txtBuscar.setForeground(new Color(200, 210, 220));
         txtBuscar.setCaretColor(Color.WHITE);
         txtBuscar.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(0, 180, 180), 1),
-            BorderFactory.createEmptyBorder(0, 10, 0, 10)
-        ));
-        txtBuscar.setText("Buscar por título o autor...");
+            BorderFactory.createLineBorder(new Color(51, 65, 85), 1),
+            BorderFactory.createEmptyBorder(0, 12, 0, 12)));
+        txtBuscar.setText("🔍  Buscar por título o autor...");
 
-        // FocusListener solo para apariencia visual del placeholder
         txtBuscar.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent e) {
-                if (placeholderActivo) {
-                    txtBuscar.setText("");
-                    txtBuscar.setForeground(Color.WHITE);
-                    placeholderActivo = false;
-                }
+                if (placeholderActivo) { txtBuscar.setText(""); placeholderActivo = false; txtBuscar.setForeground(Color.WHITE); }
             }
             public void focusLost(java.awt.event.FocusEvent e) {
                 if (txtBuscar.getText().isEmpty()) {
                     placeholderActivo = true;
-                    txtBuscar.setForeground(new Color(200, 235, 235));
-                    txtBuscar.setText("Buscar por título o autor...");
-                    cargarLibros(); // restaurar todos al salir sin texto
+                    txtBuscar.setText("🔍  Buscar por título o autor...");
+                    txtBuscar.setForeground(new Color(200,210,220));
+                    cargarLibros();
                 }
             }
         });
+        txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            public void insertUpdate(javax.swing.event.DocumentEvent e)  { filtrar(txtBuscar.getText()); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e)  { filtrar(txtBuscar.getText()); }
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { filtrar(txtBuscar.getText()); }
+        });
 
-        header.add(lblTitulo, BorderLayout.WEST);
-        header.add(txtBuscar, BorderLayout.EAST);
-        add(header, BorderLayout.NORTH);
+        h.add(left, BorderLayout.WEST);
+        h.add(txtBuscar, BorderLayout.EAST);
+        return h;
+    }
 
-        //  TABLA 
-        String[] columnas = {"ID", "Título", "Autor", "Disponibilidad"};
-        modelo = new DefaultTableModel(columnas, 0) {
+    private JScrollPane construirTabla() {
+        // Columnas: ID | Título | Autor | Imagen | Reseña | Estado
+        String[] cols = {"#", "Título", "Autor", "Imagen (URL)", "Reseña", "Estado"};
+        modelo = new DefaultTableModel(cols, 0) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
         tabla = new JTable(modelo);
-        tabla.setRowHeight(34);
-        tabla.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tabla.setRowHeight(42);
+        tabla.setFont(Tema.FONT_BODY);
         tabla.setShowVerticalLines(false);
-        tabla.setIntercellSpacing(new Dimension(0, 1));
-        tabla.setSelectionBackground(new Color(220, 245, 245));
-        tabla.setSelectionForeground(new Color(0, 80, 80));
+        tabla.setShowHorizontalLines(true);
+        tabla.setGridColor(new Color(241, 245, 249));
+        tabla.setIntercellSpacing(new Dimension(0, 0));
+        tabla.setSelectionBackground(new Color(236, 253, 245));
+        tabla.setSelectionForeground(new Color(6, 78, 59));
         tabla.setFocusable(false);
 
-        JTableHeader tableHeader = tabla.getTableHeader();
-        tableHeader.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        tableHeader.setBackground(new Color(245, 250, 250));
-        tableHeader.setForeground(new Color(60, 60, 60));
-        tableHeader.setPreferredSize(new Dimension(0, 36));
-        tableHeader.setReorderingAllowed(false);
+        JTableHeader th = tabla.getTableHeader();
+        th.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        th.setBackground(new Color(248, 250, 252));
+        th.setForeground(new Color(71, 85, 105));
+        th.setPreferredSize(new Dimension(0, 42));
+        th.setReorderingAllowed(false);
+        th.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(226, 232, 240)));
 
-        tabla.getColumnModel().getColumn(0).setMaxWidth(55);
-        tabla.getColumnModel().getColumn(0).setPreferredWidth(50);
-        tabla.getColumnModel().getColumn(1).setPreferredWidth(280);
-        tabla.getColumnModel().getColumn(2).setPreferredWidth(200);
-        tabla.getColumnModel().getColumn(3).setPreferredWidth(130);
+        tabla.getColumnModel().getColumn(0).setMaxWidth(50);
+        tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+        tabla.getColumnModel().getColumn(2).setPreferredWidth(160);
+        tabla.getColumnModel().getColumn(3).setPreferredWidth(180);
+        tabla.getColumnModel().getColumn(4).setPreferredWidth(220);
+        tabla.getColumnModel().getColumn(5).setPreferredWidth(120);
 
-        // Renderer filas alternas
+        // Renderer base
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             public Component getTableCellRendererComponent(JTable t, Object v,
                     boolean sel, boolean foc, int r, int c) {
                 super.getTableCellRendererComponent(t, v, sel, foc, r, c);
                 if (!sel) {
-                    setBackground(r % 2 == 0 ? Color.WHITE : new Color(248, 252, 252));
-                    setForeground(new Color(40, 40, 40));
+                    setBackground(r % 2 == 0 ? Color.WHITE : new Color(250, 252, 255));
+                    setForeground(new Color(30, 41, 59));
                 }
-                setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
+                setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 12));
+                setFont(c == 0 ? new Font("Consolas", Font.PLAIN, 12) : Tema.FONT_BODY);
+                if (c == 0) setHorizontalAlignment(SwingConstants.CENTER);
+                else        setHorizontalAlignment(SwingConstants.LEFT);
+                // URL de imagen: color azul
+                if (c == 3) setForeground(sel ? new Color(6,78,59) : new Color(59,130,246));
                 return this;
             }
         });
 
-        // Renderer columna Disponibilidad (sobreescribe el anterior solo en col 3)
-        tabla.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
+        // Renderer Estado (badge)
+        tabla.getColumnModel().getColumn(5).setCellRenderer(new TableCellRenderer() {
             public Component getTableCellRendererComponent(JTable t, Object v,
                     boolean sel, boolean foc, int r, int c) {
-                JLabel lbl = new JLabel();
-                lbl.setOpaque(true);
-                lbl.setHorizontalAlignment(SwingConstants.CENTER);
-                lbl.setFont(new Font("Segoe UI", Font.BOLD, 11));
-                String val = v != null ? v.toString() : "";
-                if ("Disponible".equals(val)) {
-                    lbl.setBackground(sel ? new Color(180, 230, 180) : new Color(232, 245, 233));
-                    lbl.setForeground(new Color(27, 94, 32));
-                    lbl.setText("● Disponible");
-                } else {
-                    lbl.setBackground(sel ? new Color(230, 180, 180) : new Color(253, 235, 236));
-                    lbl.setForeground(new Color(183, 28, 28));
-                    lbl.setText("● Prestado");
-                }
-                return lbl;
-            }
-        });
-
-        // Renderer columna ID centrado
-        tabla.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
-            public Component getTableCellRendererComponent(JTable t, Object v,
-                    boolean sel, boolean foc, int r, int c) {
-                super.getTableCellRendererComponent(t, v, sel, foc, r, c);
-                setHorizontalAlignment(SwingConstants.CENTER);
-                if (!sel) setBackground(r % 2 == 0 ? Color.WHITE : new Color(248, 252, 252));
-                return this;
+                JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+                p.setBackground(sel ? new Color(236,253,245) : (r%2==0 ? Color.WHITE : new Color(250,252,255)));
+                String val  = v != null ? v.toString() : "";
+                boolean disp = "Disponible".equals(val);
+                JLabel badge = new JLabel("  " + (disp ? "● Disponible" : "● Prestado") + "  ") {
+                    protected void paintComponent(Graphics g) {
+                        Graphics2D g2 = (Graphics2D) g.create();
+                        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                        g2.setColor(disp ? new Color(220,252,231) : new Color(254,226,226));
+                        g2.fillRoundRect(0,0,getWidth()-1,getHeight()-1,20,20);
+                        super.paintComponent(g);
+                        g2.dispose();
+                    }
+                };
+                badge.setFont(new Font("Segoe UI", Font.BOLD, 11));
+                badge.setForeground(disp ? new Color(22,163,74) : new Color(220,38,38));
+                badge.setOpaque(false);
+                badge.setPreferredSize(new Dimension(110, 26));
+                badge.setHorizontalAlignment(SwingConstants.CENTER);
+                p.add(badge);
+                return p;
             }
         });
 
         JScrollPane scroll = new JScrollPane(tabla);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.getViewport().setBackground(Color.WHITE);
-        add(scroll, BorderLayout.CENTER);
+        return scroll;
+    }
 
-        //  BOTONES 
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
-        panelBotones.setBackground(new Color(248, 250, 250));
-        panelBotones.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
-            new Color(220, 220, 220)));
+    private JPanel construirBotones() {
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 12, 10));
+        p.setBackground(new Color(248, 250, 252));
+        p.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(226, 232, 240)));
 
-        JButton btnEditar   = crearBoton("Editar libro",   new Color(52, 73, 94));
-        JButton btnEliminar = crearBoton("Eliminar libro", new Color(192, 57, 43));
-        panelBotones.add(btnEditar);
-        panelBotones.add(btnEliminar);
-        add(panelBotones, BorderLayout.SOUTH);
+        BotonModerno btnEditar   = new BotonModerno("✏  Editar",   new Color(59,130,246), new Color(37,99,235),  8);
+        BotonModerno btnEliminar = new BotonModerno("🗑  Eliminar", Tema.DANGER, new Color(185,28,28), 8);
+        BotonModerno btnRefresh  = new BotonModerno("↻  Actualizar", new Color(71,85,105), new Color(51,65,85),  8);
 
-        cargarLibros();
+        for (BotonModerno b : new BotonModerno[]{btnEditar, btnEliminar, btnRefresh})
+            b.setPreferredSize(new Dimension(140, 36));
 
-        //  BUSCADOR: DocumentListener limpio 
-        txtBuscar.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void insertUpdate(javax.swing.event.DocumentEvent e)  { ejecutarFiltro(); }
-            public void removeUpdate(javax.swing.event.DocumentEvent e)  { ejecutarFiltro(); }
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { ejecutarFiltro(); }
+        p.add(btnEditar); p.add(btnEliminar); p.add(btnRefresh);
 
-            private void ejecutarFiltro() {
-                // Si el placeholder está activo, NO filtrar
-                if (placeholderActivo) return;
-                String q = txtBuscar.getText().trim().toLowerCase();
-                modelo.setRowCount(0);
-                for (Libro l : controller.obtenerLibros()) {
-                    if (q.isEmpty()
-                            || l.getTitulo().toLowerCase().contains(q)
-                            || l.getAutor().toLowerCase().contains(q)) {
-                        agregarFila(l);
-                    }
-                }
-            }
-        });
+        JLabel lblCount = new JLabel();
+        lblCount.setFont(Tema.FONT_SMALL);
+        lblCount.setForeground(Tema.TEXT_GRAY);
+        modelo.addTableModelListener(e -> lblCount.setText(modelo.getRowCount() + " libro(s)"));
+        p.add(Box.createHorizontalStrut(10));
+        p.add(lblCount);
 
-        // EVENTO EDITAR 
+        // EDITAR con imagen y reseña
         btnEditar.addActionListener(e -> {
             int fila = tabla.getSelectedRow();
-            if (fila == -1) {
-                JOptionPane.showMessageDialog(this,
-                    "Selecciona un libro de la tabla.",
-                    "Sin selección", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-            int id        = (int)    modelo.getValueAt(fila, 0);
-            String titulo = (String) modelo.getValueAt(fila, 1);
-            String autor  = (String) modelo.getValueAt(fila, 2);
-            boolean disp  = "Disponible".equals(modelo.getValueAt(fila, 3));
+            if (fila == -1) { mostrarSinSeleccion(); return; }
 
-            JTextField fTitulo = new JTextField(titulo);
-            JTextField fAutor  = new JTextField(autor);
-            JPanel form = new JPanel(new GridLayout(4, 1, 6, 6));
-            form.add(new JLabel("Nuevo título:")); form.add(fTitulo);
-            form.add(new JLabel("Nuevo autor:"));  form.add(fAutor);
+            int     id     = (int)    modelo.getValueAt(fila, 0);
+            String  titulo = (String) modelo.getValueAt(fila, 1);
+            String  autor  = (String) modelo.getValueAt(fila, 2);
+            String  imagen = (String) modelo.getValueAt(fila, 3);
+            String  resena = (String) modelo.getValueAt(fila, 4);
+            boolean disp   = "Disponible".equals(modelo.getValueAt(fila, 5));
+
+            JTextField fTit  = new JTextField(titulo);
+            JTextField fAut  = new JTextField(autor);
+            JTextField fImg  = new JTextField(imagen);
+            JTextArea  fRes  = new JTextArea(resena, 3, 20);
+            fRes.setLineWrap(true); fRes.setWrapStyleWord(true);
+            JScrollPane scrollRes = new JScrollPane(fRes);
+            JCheckBox chkDisp = new JCheckBox("Disponible", disp);
+
+            JPanel form = new JPanel(new GridLayout(10, 1, 4, 4));
+            form.add(new JLabel("Título:")); form.add(fTit);
+            form.add(new JLabel("Autor:"));  form.add(fAut);
+            form.add(new JLabel("URL imagen:")); form.add(fImg);
+            form.add(new JLabel("Reseña:")); form.add(scrollRes);
+            form.add(new JLabel("Estado:")); form.add(chkDisp);
+            form.setPreferredSize(new Dimension(400, 300));
 
             int res = JOptionPane.showConfirmDialog(this, form,
-                "Editar libro", JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE);
+                "Editar libro #" + id, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             if (res != JOptionPane.OK_OPTION) return;
-
-            if (fTitulo.getText().trim().isEmpty() || fAutor.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(this,
-                    "Los campos no pueden estar vacíos.",
-                    "Error", JOptionPane.WARNING_MESSAGE);
+            if (fTit.getText().trim().isEmpty() || fAut.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Título y autor no pueden estar vacíos.", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            Libro libro = new Libro(id, fTitulo.getText().trim(),
-                                    fAutor.getText().trim(), disp);
+            Libro libro = new Libro(id, fTit.getText().trim(), fAut.getText().trim(),
+                                    chkDisp.isSelected(), fImg.getText().trim(), fRes.getText().trim());
             controller.actualizarLibro(libro);
-            JOptionPane.showMessageDialog(this, "Libro actualizado correctamente.");
+            JOptionPane.showMessageDialog(this, "✅ Libro actualizado correctamente.");
             refrescar();
         });
 
-        //  EVENTO ELIMINAR 
         btnEliminar.addActionListener(e -> {
             int fila = tabla.getSelectedRow();
-            if (fila == -1) {
-                JOptionPane.showMessageDialog(this,
-                    "Selecciona un libro de la tabla.",
-                    "Sin selección", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-            String tituloSel = modelo.getValueAt(fila, 1).toString();
-            int confirm = JOptionPane.showConfirmDialog(this,
-                "¿Eliminar el libro \"" + tituloSel + "\"?",
-                "Confirmar eliminación",
-                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (confirm != JOptionPane.YES_OPTION) return;
-
+            if (fila == -1) { mostrarSinSeleccion(); return; }
+            String tit = modelo.getValueAt(fila, 1).toString();
+            int conf = JOptionPane.showConfirmDialog(this,
+                "<html>¿Eliminar el libro <b>\"" + tit + "\"</b>?<br>Esta acción no se puede deshacer.</html>",
+                "Confirmar eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (conf != JOptionPane.YES_OPTION) return;
             controller.eliminarLibro((int) modelo.getValueAt(fila, 0));
             JOptionPane.showMessageDialog(this, "Libro eliminado.");
             refrescar();
         });
+
+        btnRefresh.addActionListener(e -> refrescar());
+        return p;
     }
 
     public void refrescar() { cargarLibros(); }
 
     private void cargarLibros() {
         modelo.setRowCount(0);
-        for (Libro l : controller.obtenerLibros()) {
-            agregarFila(l);
-        }
+        for (Libro l : controller.obtenerLibros()) agregarFila(l);
     }
 
-    // Método centralizado para agregar fila — evita duplicar lógica
     private void agregarFila(Libro l) {
         modelo.addRow(new Object[]{
-            l.getId(),
-            l.getTitulo(),
-            l.getAutor(),
+            l.getId(), l.getTitulo(), l.getAutor(),
+            l.getImagen(), l.getResena(),
             l.isDisponible() ? "Disponible" : "Prestado"
         });
     }
 
-    private JButton crearBoton(String texto, Color color) {
-        JButton btn = new JButton(texto);
-        btn.setBackground(color);
-        btn.setForeground(Color.WHITE);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setOpaque(true);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.setPreferredSize(new Dimension(150, 36));
-        Color hover = color.darker();
-        btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent e) { btn.setBackground(hover); }
-            public void mouseExited(java.awt.event.MouseEvent e)  { btn.setBackground(color); }
-        });
-        return btn;
+    private void filtrar(String q) {
+        if (placeholderActivo) return;
+        String txt = q.trim().toLowerCase();
+        modelo.setRowCount(0);
+        for (Libro l : controller.obtenerLibros()) {
+            if (txt.isEmpty() || l.getTitulo().toLowerCase().contains(txt)
+                || l.getAutor().toLowerCase().contains(txt)) agregarFila(l);
+        }
+    }
+
+    private void mostrarSinSeleccion() {
+        JOptionPane.showMessageDialog(this, "Selecciona un libro de la tabla.", "Sin selección", JOptionPane.INFORMATION_MESSAGE);
     }
 }
