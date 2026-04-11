@@ -22,6 +22,8 @@ public class MainFrame extends JFrame {
     private ListaUsuariosFrame listaUsuariosFrame;
     private PrestamoForm       prestamoForm;
     private PanelInicio        panelInicio;
+    private LibroForm          libroForm;
+    private UsuarioForm        usuarioForm;
 
     private JButton btnActivo = null;
 
@@ -46,15 +48,19 @@ public class MainFrame extends JFrame {
         listaLibrosFrame   = new ListaLibrosFrame(controller);
         listaUsuariosFrame = new ListaUsuariosFrame(controller);
         prestamoForm       = new PrestamoForm(controller);
+        libroForm          = new LibroForm(controller);
+        usuarioForm        = new UsuarioForm(controller);
 
         prestamoForm.setListaLibrosRef(listaLibrosFrame);
+        libroForm.setPrestamoFormRef(prestamoForm);
+        usuarioForm.setPrestamoFormRef(prestamoForm);
 
-        panelContenedor.add(panelInicio,                  "INICIO");
-        panelContenedor.add(new LibroForm(controller),    "LIBRO");
-        panelContenedor.add(listaLibrosFrame,             "LISTA_LIBROS");
-        panelContenedor.add(listaUsuariosFrame,           "LISTA_USUARIOS");
-        panelContenedor.add(new UsuarioForm(controller),  "USUARIOS");
-        panelContenedor.add(prestamoForm,                 "PRESTAMOS");
+        panelContenedor.add(panelInicio,        "INICIO");
+        panelContenedor.add(libroForm,          "LIBRO");
+        panelContenedor.add(listaLibrosFrame,   "LISTA_LIBROS");
+        panelContenedor.add(listaUsuariosFrame, "LISTA_USUARIOS");
+        panelContenedor.add(usuarioForm,        "USUARIOS");
+        panelContenedor.add(prestamoForm,       "PRESTAMOS");
 
         add(panelContenedor, BorderLayout.CENTER);
     }
@@ -157,10 +163,10 @@ public class MainFrame extends JFrame {
         avatarPanel.add(avatar); avatarPanel.add(infoPanel);
 
         JLabel sec1 = crearSeccionLabel("MENÚ PRINCIPAL");
-        JButton btnInicio       = crearItemMenu("🏠  Inicio");
-        JButton btnAgregarLibro = crearItemMenu("＋  Agregar Libro");
-        JButton btnVerLibros    = crearItemMenu("📖  Catálogo de Libros");
-        JButton btnPrestar      = crearItemMenu("🔄  Préstamos");
+        JButton btnInicio       = crearItemMenu("  Inicio");
+        JButton btnAgregarLibro = crearItemMenu("  Agregar Libro");
+        JButton btnVerLibros    = crearItemMenu("  Catálogo de Libros");
+        JButton btnPrestar      = crearItemMenu("  Préstamos");
 
         sidebar.add(avatarPanel);
         sidebar.add(sepLine());
@@ -177,8 +183,8 @@ public class MainFrame extends JFrame {
             sidebar.add(Box.createVerticalStrut(6));
             sidebar.add(crearSeccionLabel("ADMINISTRACIÓN"));
 
-            JButton btnVerUsuarios    = crearItemMenu("👥  Ver Usuarios");
-            JButton btnAgregarUsuario = crearItemMenu("➕  Agregar Usuario");
+            JButton btnVerUsuarios    = crearItemMenu("  Ver Usuarios");
+            JButton btnAgregarUsuario = crearItemMenu("  Agregar Usuario");
 
             sidebar.add(btnVerUsuarios);    sidebar.add(Box.createVerticalStrut(2));
             sidebar.add(btnAgregarUsuario);
@@ -188,9 +194,9 @@ public class MainFrame extends JFrame {
             sidebar.add(Box.createVerticalStrut(6));
             sidebar.add(crearSeccionLabel("EXPORTAR CSV"));
 
-            JButton btnExLibros    = crearItemMenu("📊  Exportar Libros");
-            JButton btnExPrestamos = crearItemMenu("📋  Exportar Préstamos");
-            JButton btnExUsuarios  = crearItemMenu("👤  Exportar Usuarios");
+            JButton btnExLibros    = crearItemMenu("  Exportar Libros");
+            JButton btnExPrestamos = crearItemMenu("  Exportar Préstamos");
+            JButton btnExUsuarios  = crearItemMenu("  Exportar Usuarios");
 
             sidebar.add(btnExLibros);    sidebar.add(Box.createVerticalStrut(2));
             sidebar.add(btnExPrestamos); sidebar.add(Box.createVerticalStrut(2));
@@ -226,7 +232,7 @@ public class MainFrame extends JFrame {
         }
 
         sidebar.add(Box.createVerticalGlue());
-        JLabel version = new JLabel("v3.0 — 9no Ciclo");
+        JLabel version = new JLabel("v3.0");
         version.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         version.setForeground(new Color(51, 65, 85));
         version.setAlignmentX(Component.CENTER_ALIGNMENT);
