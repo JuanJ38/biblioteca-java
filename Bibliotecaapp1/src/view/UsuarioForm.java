@@ -10,6 +10,11 @@ import java.awt.*;
 public class UsuarioForm extends JPanel {
 
     private final BibliotecaController controller;
+    private PrestamoForm prestamoFormRef = null;
+
+    public void setPrestamoFormRef(PrestamoForm ref) {
+        this.prestamoFormRef = ref;
+    }
 
     public UsuarioForm(BibliotecaController controller) {
         this.controller = controller;
@@ -114,6 +119,7 @@ public class UsuarioForm extends JPanel {
                     "✅ Usuario \"" + nombre + "\" registrado correctamente.",
                     "Usuario Registrado", JOptionPane.INFORMATION_MESSAGE);
                 txtNombre.limpiar(); txtCorreo.limpiar(); txtNombre.requestFocus();
+                if (prestamoFormRef != null) prestamoFormRef.refrescarCombos();
             } else {
                 JOptionPane.showMessageDialog(this,
                     "<html>No se pudo registrar.<br>El correo <b>" + correo + "</b> ya existe o hay un error de conexión.</html>",
