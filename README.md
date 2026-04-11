@@ -1,5 +1,5 @@
 
-> Sistema de gestión de biblioteca académica — Java Swing + MySQL
+> Sistema de gestión de biblioteca académica — Java Swing + SQL SERVER
 
 BibliotecaApp es un sistema de escritorio desarrollado en Java con interfaz gráfica Swing para la gestión completa de una biblioteca académica. Permite administrar el inventario de libros, registrar usuarios, controlar préstamos y devoluciones, con un diseño visual moderno y una arquitectura en capas bien definida.
 
