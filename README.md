@@ -60,7 +60,7 @@ BibliotecaApp/
 
 ---
 
-## ⚙️ Configuración
+##  Configuración
 
 **1. Crear la base de datos**
 ```sql
@@ -97,10 +97,7 @@ CREATE TABLE prestamos (
 
 **3. Editar credenciales en `src/util/ConexionBD.java`**
 ```java
-private static final String URL  = "jdbc:mysql://localhost:3306/biblioteca_db";
-private static final String USER = "root";
-private static final String PASS = "tu_contraseña";
-```
+
 
 **4. Agregar el driver al Build Path**
 mysql-connector-java-x.x.x.jar → Build Path → Add External JARs
