@@ -148,12 +148,12 @@ public class PanelInicio extends JPanel {
         p.setPreferredSize(new Dimension(0, 90));
 
         // Tarjeta "Acceso rápido"
-        p.add(crearMiniCard("⚡  Acceso Rápido",
+        p.add(crearMiniCard("  Acceso Rápido",
             "Usa el menú lateral para navegar\nentre los módulos del sistema.",
             new Color(30, 41, 59)));
 
         // Tarjeta "Credenciales de prueba"
-        p.add(crearMiniCard("ℹ  Información de Sesión",
+        p.add(crearMiniCard("  Información de Sesión",
             "Sesión activa como: " + rol + "\nNivel: " + (rol.equals("ADMIN") ? "Administrador Total" : "Acceso de Lectura"),
             new Color(15, 23, 42)));
 
@@ -231,7 +231,7 @@ public class PanelInicio extends JPanel {
 
             g2.setFont(new Font("Segoe UI", Font.PLAIN, 14));
             g2.setColor(new Color(148, 163, 184));
-            g2.drawString("Sistema de Gestión de Biblioteca — 9no Ciclo · Ingeniería Informática", 32, 82);
+            g2.drawString("Sistema de Gestión de Biblioteca ", 32, 82);
 
             // Línea verde
             g2.setColor(Tema.PRIMARY);
