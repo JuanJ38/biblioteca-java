@@ -102,7 +102,9 @@ public class ListaLibrosFrame extends JPanel {
         tabla.getColumnModel().getColumn(0).setMaxWidth(50);
         tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
         tabla.getColumnModel().getColumn(2).setPreferredWidth(160);
-        tabla.getColumnModel().getColumn(3).setPreferredWidth(180);
+        tabla.getColumnModel().getColumn(3).setMinWidth(0);
+        tabla.getColumnModel().getColumn(3).setMaxWidth(0);
+        tabla.getColumnModel().getColumn(3).setWidth(0);
         tabla.getColumnModel().getColumn(4).setPreferredWidth(220);
         tabla.getColumnModel().getColumn(5).setPreferredWidth(120);
 
@@ -119,8 +121,8 @@ public class ListaLibrosFrame extends JPanel {
                 setFont(c == 0 ? new Font("Consolas", Font.PLAIN, 12) : Tema.FONT_BODY);
                 if (c == 0) setHorizontalAlignment(SwingConstants.CENTER);
                 else        setHorizontalAlignment(SwingConstants.LEFT);
-                // URL de imagen: color azul
-                if (c == 3) setForeground(sel ? new Color(6,78,59) : new Color(59,130,246));
+                
+                
                 return this;
             }
         });
