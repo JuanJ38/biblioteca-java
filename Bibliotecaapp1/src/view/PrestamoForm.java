@@ -20,6 +20,8 @@ public class PrestamoForm extends JPanel {
     private DefaultTableModel modeloTabla;
     private JTable tablaPrestamos;
     private boolean mostrarSoloActivos = true;   // por defecto muestra activos
+    private JComboBox<Libro> comboLibros;
+    private JComboBox<Usuario> comboUsuarios;
 
     // Referencia al panel de libros para refrescarlo al devolver
     private ListaLibrosFrame listaLibrosRef = null;
@@ -71,14 +73,14 @@ public class PrestamoForm extends JPanel {
         JPanel colLibro = new JPanel(new BorderLayout(0, 5));
         colLibro.setOpaque(false);
         colLibro.add(crearLabel("📖  Libro disponible *"), BorderLayout.NORTH);
-        JComboBox<Libro> comboLibros = crearComboGen();
+        comboLibros = crearComboGen();
         colLibro.add(comboLibros, BorderLayout.CENTER);
 
         // Combo usuarios
         JPanel colUsuario = new JPanel(new BorderLayout(0, 5));
         colUsuario.setOpaque(false);
         colUsuario.add(crearLabel("👤  Usuario *"), BorderLayout.NORTH);
-        JComboBox<Usuario> comboUsuarios = crearComboGen();
+        comboUsuarios = crearComboGen();
         colUsuario.add(comboUsuarios, BorderLayout.CENTER);
 
         filaSelects.add(colLibro);
@@ -154,6 +156,7 @@ public class PrestamoForm extends JPanel {
                         + "📆 Devolución referencial: <b>" + dev  + "</b></html>",
                         "Préstamo Confirmado", JOptionPane.INFORMATION_MESSAGE);
                 cargarComboLibros(comboLibros);
+                cargarComboUsuarios(comboUsuarios);
                 refrescarTabla();
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -353,6 +356,7 @@ public class PrestamoForm extends JPanel {
                         "✅ Devolución registrada. El libro vuelve a estar disponible.",
                         "Devolución exitosa", JOptionPane.INFORMATION_MESSAGE);
                 refrescarTabla();
+                cargarComboLibros(comboLibros);
                 if (listaLibrosRef != null) listaLibrosRef.refrescar();
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -362,6 +366,11 @@ public class PrestamoForm extends JPanel {
 
         btnRefresh.addActionListener(e -> refrescarTabla());
         return panel;
+    }
+    
+    public void refrescarCombos() {
+        if (comboLibros   != null) cargarComboLibros(comboLibros);
+        if (comboUsuarios != null) cargarComboUsuarios(comboUsuarios);
     }
 
     // ── MÉTODOS AUXILIARES ──────────────────────────────────────────
