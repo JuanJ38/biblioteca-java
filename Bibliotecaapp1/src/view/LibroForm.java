@@ -10,6 +10,11 @@ import java.awt.*;
 public class LibroForm extends JPanel {
 
     private final BibliotecaController controller;
+    private PrestamoForm prestamoFormRef = null;
+
+    public void setPrestamoFormRef(PrestamoForm ref) {
+        this.prestamoFormRef = ref;
+    }
 
     public LibroForm(BibliotecaController controller) {
         this.controller = controller;
@@ -138,6 +143,7 @@ public class LibroForm extends JPanel {
                 txtResena.setText("Escribe una breve reseña del libro...");
                 txtResena.setForeground(Tema.TEXT_GRAY);
                 txtTitulo.requestFocus();
+                if (prestamoFormRef != null) prestamoFormRef.refrescarCombos();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al guardar. Verifica la conexión.", "Error", JOptionPane.ERROR_MESSAGE);
             }
