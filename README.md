@@ -58,37 +58,7 @@ BibliotecaApp/
 │   └── view/
 └── resources/
 
----
-
-##  Configuración
-CREATE TABLE libros (
-    id         INT AUTO_INCREMENT PRIMARY KEY,
-    titulo     VARCHAR(200) NOT NULL,
-    autor      VARCHAR(150) NOT NULL,
-    imagen     VARCHAR(500),
-    resena     TEXT,
-    disponible BOOLEAN DEFAULT TRUE
-);
-
-CREATE TABLE usuarios (
-    id     INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(150) NOT NULL,
-    correo VARCHAR(200) NOT NULL UNIQUE
-);
-
-CREATE TABLE prestamos (
-    id               INT AUTO_INCREMENT PRIMARY KEY,
-    id_libro         INT NOT NULL,
-    id_usuario       INT NOT NULL,
-    fecha_prestamo   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fecha_devolucion DATETIME,
-    FOREIGN KEY (id_libro)   REFERENCES libros(id),
-    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
-);
-RequisitosJava 
-JDK 17  superiorMySQL 8.0
-superior MySQL 
-Connector/JEclipse o IntelliJ IDEA
+--
 
 
 ---
