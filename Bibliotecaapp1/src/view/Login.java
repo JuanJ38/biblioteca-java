@@ -72,11 +72,11 @@ public class Login extends JFrame {
         sep.setMaximumSize(new Dimension(290, 1));
 
         // Campos
-        CampoTextoModerno txtUsuario = new CampoTextoModerno("👤  Usuario");
+        CampoTextoModerno txtUsuario = new CampoTextoModerno(" Usuario");
         txtUsuario.setMaximumSize(new Dimension(290, 46));
         txtUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        CampoPasswordModerno txtPass = new CampoPasswordModerno("🔒  Contraseña");
+        CampoPasswordModerno txtPass = new CampoPasswordModerno("  Contraseña");
         txtPass.setMaximumSize(new Dimension(290, 46));
         txtPass.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -253,7 +253,7 @@ public class Login extends JFrame {
 
             // Características del sistema
             int yF = rY + 90;
-            String[] features = { "✦  Control de préstamos", "✦  Gestión de usuarios", "✦  Inventario de libros" };
+            String[] features = { "  Control de préstamos", "  Gestión de usuarios", "  Inventario de libros" };
             g2.setFont(new Font("Segoe UI", Font.PLAIN, 12));
             g2.setColor(new Color(100, 116, 139));
             for (String f : features) {
@@ -264,7 +264,7 @@ public class Login extends JFrame {
             // Footer
             g2.setFont(new Font("Segoe UI", Font.PLAIN, 10));
             g2.setColor(new Color(71, 85, 105));
-            drawCentered(g2, "© 2025 — Ingeniería Informática · 9no Ciclo", cx, h - 20);
+            drawCentered(g2, "© 2025 ", cx, h - 20);
 
             g2.dispose();
         }
