@@ -1,12 +1,10 @@
 ID;Libro;Usuario;Fecha Prestamo;Fecha Devolucion;Estado
-11;"El Alquimista";"Carlos Mendoza";11/04/2026 00:00;11/04/2026 00:00;Devuelto
-10;"Hamlet";"Greco";09/04/2026 00:00;11/04/2026 00:00;Devuelto
-9;"Cien años de Soledad";"Be";09/04/2026 00:00;09/04/2026 00:00;Devuelto
-8;"Tradiciones Peruanas";"Be";09/04/2026 00:00;09/04/2026 00:00;Devuelto
-7;"Cien años de Soledad";"Greco";04/04/2026 00:00;09/04/2026 00:00;Devuelto
-6;"Tradiciones Peruanas";"Luu";04/04/2026 00:00;09/04/2026 00:00;Devuelto
-5;"Tradiciones Peruanas";"Luu";04/04/2026 00:00;04/04/2026 00:00;Devuelto
-4;"Tradiciones Peruanas";"Luu";04/04/2026 00:00;04/04/2026 00:00;Devuelto
-3;"Cien años de Soledad";"Greco";04/04/2026 00:00;04/04/2026 00:00;Devuelto
-2;"Heraldo Negros";"JJ";31/03/2026 00:00;04/04/2026 00:00;Devuelto
-1;"Hamlet";"Luu";28/03/2026 00:00;04/04/2026 00:00;Devuelto
+9;"El Túnel";"Mateo Quispe";11/04/2026 00:00;;Activo
+8;"Crónica de una muerte anunciada";"Lu Prado";11/04/2026 00:00;;Activo
+7;"Cien años de Soledad";"Bea Vale";11/04/2026 00:00;11/04/2026 00:00;Devuelto
+6;"Tradiciones Peruanas";"Elena Vizcarra";11/04/2026 00:00;;Activo
+5;"Crónica de una muerte anunciada";"Lucía Fernández";11/04/2026 00:00;11/04/2026 00:00;Devuelto
+4;"Hamlet";"Jorge Ramírez";11/04/2026 00:00;11/04/2026 00:00;Devuelto
+3;"Heraldo Negros";"Bea Vale";11/04/2026 00:00;;Activo
+2;"La ciudad y los perros";"Lucía Fernández";11/04/2026 00:00;;Activo
+1;"Don Quijote de la Mancha";"Elena Vizcarra";11/04/2026 00:00;11/04/2026 00:00;Devuelto
