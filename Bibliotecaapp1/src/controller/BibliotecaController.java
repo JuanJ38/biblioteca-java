@@ -16,7 +16,7 @@ public class BibliotecaController {
     private final UsuarioService  usuarioService  = new UsuarioService();
     private final PrestamoService prestamoService = new PrestamoService();
 
-    // ── LIBROS ──────────────────────────────────────────────────────
+    // ── LIBROS ──────────────────────────────────────────────────
     public boolean agregarLibro(String titulo, String autor, String imagen, String resena) {
         return libroService.guardarLibro(titulo, autor, imagen, resena);
     }
